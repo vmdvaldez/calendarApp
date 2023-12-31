@@ -3,22 +3,20 @@ import styles from '../styles/Calendar.module.css';
 import date from '../helper/date';
 
 import CalendarDay from './CalendarDay';
+import { useState } from 'react';
 
-export default function Calendar({month, year}){
-    month = 11;
-    year = 2023
-
-    const totalDays = date.getDaysInMonth(month, year);
+export default function Calendar(){
+    const [month, setMonth] = useState((new Date()).getMonth());
+    const [year, setYear] = useState((new Date).getFullYear());
     const createCalendarDays = ()=>{
+        const totalDays = date.getDaysInMonth(month, year);
         const grids = [];
         for (let i = 0; i < totalDays; i++){
-            grids.push(<CalendarDay day={i+1}/>);
+            grids.push(<CalendarDay key={`${month}${i+1}${year}`} day={i+1}/>);
         }
         return grids
     }
 
-
-    console.log(month, year, totalDays);
     return(
      <section className={styles.calendar}>
         <div className={styles.container}>
