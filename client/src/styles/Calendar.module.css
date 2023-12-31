@@ -1,0 +1,27 @@
+.calendar{
+    padding: 5vw;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+}
+
+.grids{
+    padding: 5px;
+    background-color: rgba(128, 128, 128, 0.679);
+    display: grid;
+    gap: 5px;
+
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: minmax(250px, 1fr);
+}
+
+
+/* @media (max-width:  700px) {
+    .grids{
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        grid-auto-rows: minmax(80px, 1fr);
+    }
+
+} */

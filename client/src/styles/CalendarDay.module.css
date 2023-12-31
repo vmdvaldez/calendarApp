@@ -1,0 +1,10 @@
+.day{
+    background-color: grey;
+    border: 2px solid black;
+    padding: 1%;
+}
+
+.day .num{
+    text-align: right;
+}
+
