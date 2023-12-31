@@ -17,6 +17,26 @@ export default function Calendar(){
         return grids
     }
 
+    const goToNextMonth = () => {
+        if (month == date.months - 1){
+            setMonth(0)
+            setYear(year + 1)
+        }
+        else{
+            setMonth(month + 1)
+        }
+    }
+
+    const goToPrevMonth = ()=>{
+        if (month <= 0){
+            setMonth(date.months-1)
+            setYear(year - 1)
+        }
+        else{
+            setMonth(month - 1)
+        }
+    }
+
     return(
      <section className={styles.calendar}>
         <div className={styles.container}>
@@ -24,6 +44,8 @@ export default function Calendar(){
             <div className={styles.grids}>
                 {createCalendarDays()}
             </div>
+            <button onClick={goToPrevMonth}>Prev</button>
+            <button onClick={goToNextMonth}>Next</button>
         </div>
      </section>   
     )

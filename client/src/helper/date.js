@@ -24,6 +24,8 @@ const date = (()=>{
         "Saturday"
     ]
     
+    const months = monthNames.length;
+    const days = dayNames.length;
 
     // @param monthIndex: val returned by Date().getMonth()
     function getMonth(monthIndex){
@@ -57,7 +59,7 @@ const date = (()=>{
         return (month === 2) ? (28 + leapYr) : 31 - (month - 1) % 7 % 2;
     }
 
-    return {getMonth, getDay, getCurrentDate, getDaysInMonth}
+    return {getMonth, getDay, getCurrentDate, getDaysInMonth, months, days}
 })();
 
 
