@@ -52,11 +52,6 @@ export default function Calendar(){
 
     return(
      <section className={styles.calendar}>
-        {/* <div className={styles.modal}>
-            <div className={styles.content}>
-
-            </div>
-        </div> */}
         <div className={styles.container}>
             <h1>{date.getMonth(month)} {year}</h1>
             <div className={styles.grids}>
