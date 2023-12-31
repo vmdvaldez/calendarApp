@@ -3,7 +3,7 @@ import styles from '../styles/Calendar.module.css';
 import date from '../helper/date';
 
 import CalendarDay from './CalendarDay';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Calendar(){
     const [month, setMonth] = useState((new Date()).getMonth());
@@ -37,10 +37,28 @@ export default function Calendar(){
         }
     }
 
+
+    // useEffect(()=>{
+    //     const protocol = "http://"
+    //     const url = import.meta.env.VITE_BACKEND_URL
+    //     const port = import.meta.env.VITE_BACKEND_PORT
+    //     fetch(`${protocol}${url}:${port}/`,{
+    //         method: "GET",
+    //         mode: 'cors'
+    //     })
+    //     .then(x=>x.json())
+    //     .then(y=>console.log(y));
+    // })
+
     return(
      <section className={styles.calendar}>
+        {/* <div className={styles.modal}>
+            <div className={styles.content}>
+
+            </div>
+        </div> */}
         <div className={styles.container}>
-            <div>{date.getMonth(month)} {year}</div>
+            <h1>{date.getMonth(month)} {year}</h1>
             <div className={styles.grids}>
                 {createCalendarDays()}
             </div>

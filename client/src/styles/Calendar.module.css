@@ -1,11 +1,18 @@
 .calendar{
-    padding: 5vw;
+    padding: 1%;
+    display: flex;
     flex: 1;
 }
 
 .container{
-    width: 100%;
-    height: 100%;
+    flex: 1;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.container h1{
+    font-size: 5rem;
 }
 
 .grids{
@@ -14,15 +21,40 @@
     display: grid;
     gap: 5px;
 
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-auto-rows: minmax(250px, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(10vw, 1fr));
+    grid-auto-rows: 10vw;
 }
 
 
-/* @media (max-width:  700px) {
-    .grids{
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        grid-auto-rows: minmax(80px, 1fr);
+
+
+.modal {
+    background-color: rgba(128, 128, 128, 0.603);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.modal .content{
+}
+
+@media (max-width:  700px) {
+    .container h1{
+        font-size: 2rem;
     }
 
-} */
+    .grids{
+        flex: 1;
+    
+        padding: 5px;
+        background-color: rgba(128, 128, 128, 0.679);
+        display: grid;
+        gap: 5px;
+    
+        grid-template-columns: repeat(auto-fit, minmax(18vw, 1fr));
+        grid-auto-rows: 18vw;
+    }
+    
+}

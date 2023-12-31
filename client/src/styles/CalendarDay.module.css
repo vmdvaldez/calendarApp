@@ -2,6 +2,11 @@
     background-color: grey;
     border: 2px solid black;
     padding: 1%;
+    cursor: pointer;
+}
+
+.day:hover{
+    background-color: rgba(128, 128, 128, 0.405);
 }
 
 .day .num{
