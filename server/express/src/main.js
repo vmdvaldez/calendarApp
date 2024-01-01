@@ -7,9 +7,9 @@ const pool = require('./pgdb');
 
 app.use(cors());
 
-app.get('/', async (req,res)=>{
+app.get('/activity', async (req,res)=>{
 
-    const q = await pool.query('SELECT * FROM activity');
+    const q = await pool.query('SELECT name FROM activity');
 
     res.send(q.rows);
 })
