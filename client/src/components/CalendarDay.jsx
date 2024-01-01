@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../styles/CalendarDay.module.css';
 
-export default function CalendarDay({day}){
+export default function CalendarDay({day, month, year, activityList}){
     const [clicked, setClicked] = useState(false);
+
 
     return(
         <div className={styles.day  }
@@ -15,14 +16,21 @@ export default function CalendarDay({day}){
                     End<input type='time' name='end_time'></input>
 
                     Activity
-                    <input type="text" list="activityList"></input>
+                    <input type="text" list="activityList" 
+                        onBlur={(e)=>{
+                            const elem = e.target
+                            const val = elem.value
+                            if(val != "" && !activityList.includes(val)){
+                                elem.setCustomValidity("Error: Please Create Entered Activity.");
+                                elem.reportValidity();
+                            }
+                        }}
+                        ></input>
                     <datalist id="activityList">
-                        {/* Add activity here */}
-                        <option value="A">A</option>
-                        <option value="B">B</option>
+                        {activityList.map(activity=>{
+                            return(<option value={activity}>{activity}</option>)
+                        })}
                     </datalist>
-                    <button type="button">new Activity</button>
-                    <button type="submit">Submit</button>
 
                 </form>
             </div>}
