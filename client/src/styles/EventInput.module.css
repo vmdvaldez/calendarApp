@@ -23,3 +23,7 @@
 .activity {
     background-color: yellow;
 }
+
+.hide{
+    display: none;
+}

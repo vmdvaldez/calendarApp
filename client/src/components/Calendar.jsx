@@ -9,6 +9,7 @@ export default function Calendar(){
     const [month, setMonth] = useState((new Date()).getMonth());
     const [year, setYear] = useState((new Date).getFullYear());
     const [activityList, setActivityList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
 
     const createCalendarDays = ()=>{
         const totalDays = date.getDaysInMonth(month, year);
@@ -16,6 +17,7 @@ export default function Calendar(){
         for (let i = 0; i < totalDays; i++){
             grids.push(
             <CalendarDay 
+                categoryList={categoryList}
                 activityList={activityList}
                 key={`${month}${i+1}${year}`} 
                 month={month} day={i+1} 
@@ -67,6 +69,25 @@ export default function Calendar(){
 
     },[])
 
+    useEffect(()=>{
+        async function getCategories(){
+            const protocol = "http://"
+            const url = import.meta.env.VITE_BACKEND_URL
+            const port = import.meta.env.VITE_BACKEND_PORT
+            const res = await fetch(`${protocol}${url}:${port}/categories`, {
+                method: "GET",
+                headers:{
+                    mode: "cors"
+                }
+            })
+            const json =  await res.json();
+            return json
+        }
+
+        getCategories().then(categories => {
+            setCategoryList(categories.map(category=>category.name));
+        });
+    },[]);
 
     return(
      <section className={styles.calendar}>

@@ -14,6 +14,11 @@ app.get('/activity', async (req,res)=>{
     res.send(q.rows);
 })
 
+app.get('/categories', async (req,res)=>{
+    const q = await pool.query('SELECT name FROM category');
+
+    res.send(q.rows);
+});
 
 const port = 3000
 app.listen(port, ()=>{
