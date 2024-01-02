@@ -13,8 +13,8 @@ export default function EventInput({activityList, categoryList}){
         activity: ""
     })
     const [activityFormStates, setActivityFormStates] = useState({
-        numCatInput: 1,
-        title: ""
+        title: "",
+        categories: [""]
     })
 
 
