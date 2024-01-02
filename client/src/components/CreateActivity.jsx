@@ -33,12 +33,27 @@ export default function CreateActivity({
         const protocol = "http://"
         const url = import.meta.env.VITE_BACKEND_URL
         const port = import.meta.env.VITE_BACKEND_PORT
-        const res = await fetch(`${protocol}${url}:${port}/categories?` + 
-            new URLSearchParams({...activityState}), {
+        const fullPath = `${protocol}${url}:${port}`
+        const resCat = await fetch(`${fullPath}/categories`, 
+            {
                 method: "POST",
                 headers: {
-                    mode: "cors"
-                }
+                    mode: "cors",
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({categories: activityState.categories})
+            }
+        )
+        const resAct = await fetch(`${fullPath}/activity`,
+            {
+                method: "POST",
+                headers: {
+                    mode: "cors",
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({activity: activityState.title})
             }
         )
     }
