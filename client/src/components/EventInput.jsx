@@ -6,9 +6,17 @@ import CreateEvent from './CreateEvent';
 
 export default function EventInput({activityList, categoryList}){
     const [createActivity, setCreateActivity] = useState(false);
+    const [eventFormStates, setEventFormStates] = useState({
+        title: "",
+        start: "",
+        end: "",
+        activity: ""
+    })
+    const [activityFormStates, setActivityFormStates] = useState({
+        numCatInput: 1,
+        title: ""
+    })
 
-
-    console.log(categoryList);
 
     // ON submit for create activity return change state to createEvent
     // On submit reset Create Activity inputs
@@ -22,11 +30,15 @@ export default function EventInput({activityList, categoryList}){
                 <CreateEvent
                     activityList={activityList}
                     setCreateActivity={setCreateActivity}
+                    eventStates={eventFormStates}
+                    setEventStates={setEventFormStates}
                 /> :  
                 
                 <CreateActivity 
                     setCreateActivity={setCreateActivity}
                     categoryList={categoryList}
+                    activityState={activityFormStates}
+                    setActivityState={setActivityFormStates}
                 />
             }
 

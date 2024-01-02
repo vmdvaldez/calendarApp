@@ -1,12 +1,35 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from '../styles/CreateEvent.module.css';
 
-export default function CreateEvent({activityList, setCreateActivity}){
+export default function CreateEvent({
+    activityList, 
+    setCreateActivity, 
+    eventStates, 
+    setEventStates}
+    ){
     return(
         <form action="" method=''>
-            Title<input type="text" name='title' required></input>
-            Start<input type='time' name='start_time'></input>
-            End<input type='time' name='end_time'></input>
+            Title
+            <input 
+                type="text" 
+                name='title'
+                value={eventStates.title}
+                onChange={e=>setEventStates({...eventStates, title: e.target.value})} 
+                required />
+            Start
+            <input 
+                type='time' 
+                name='start_time' 
+                value={eventStates.start}
+                onChange={e=>setEventStates({...eventStates, start: e.target.value})}
+                />
+            End
+            <input 
+                type='time' 
+                name='end_time' 
+                value={eventStates.end}
+                onChange={e=>setEventStates({...eventStates, end: e.target.value})}
+                />
 
             Activity
             <input type="text" 
@@ -21,11 +44,11 @@ export default function CreateEvent({activityList, setCreateActivity}){
                         elem.reportValidity();
                     }
                 }}
+                value={eventStates.activity}
+                onChange={e=>setEventStates({...eventStates, activity: e.target.value})}
             />
             <button type="button"
-                onClick={()=>{
-                    setCreateActivity(true)
-                }}
+                onClick={()=>{setCreateActivity(true)}}
             >add</button>
             
             <datalist id="activityList">
