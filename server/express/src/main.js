@@ -10,46 +10,63 @@ app.use(cors());
 app.use(express.json()) 
 
 // TODO: input validation to prevent SQL injections
+// TODO: push activity and category together via transcation -- will need to push activity and category relations as well
 
-app.route('/activity')
-    .get(async (req,res)=>{
+app.get('/activity', async (req,res)=>{
     console.log("REQUESTING ACTIVITIES")
     const q = await pool.query('SELECT name FROM activity');
 
     res.send(q.rows);
     })
-    .post(async(req,res)=>{
-        console.log("POST TO ACTIVITIES");
-        console.log(req.body);
-        // const q = await pool.query(`INSERT INTO category (title, caVALUES `);
-        res.send(200);
-    });
 
-app.route('/categories')
-    .get(async (req,res)=>{
+
+app.get('/categories',async (req,res)=>{
         console.log("REQUESTING CATEGORIES");
         const q = await pool.query('SELECT name FROM category');
         res.send(q.rows);
     })
-    .post(async(req,res)=>{
-        console.log("POST TO CATEGORIES");
-        console.log(req.body);
-        const categories = req.body.categories
-        let query = `INSERT INTO category (name) VALUES `
-        for (let i =0; i < categories.length; i++){
-            query += `('${categories[i]}'),`
-        }
-        query = query.slice(0, -1);
-        console.log(query);
-        try{
-            const q = await pool.query(query);
-            console.log(q);
-        }catch(e){
-            console.log(e);
-        }
 
-        res.send(200);
-    });
+app.post('/setactivity', async(req,res)=>{
+    // TODO : handle return
+    console.log("POST TO setactivity");
+    console.log(req.body);
+    const {activity, categories} = req.body;
+
+    let ret = "";
+
+    await pool.query('BEGIN')
+    try{
+        const aQueryRet = await pool.query(`
+            INSERT INTO activity (name) VALUES ('${activity}') 
+            RETURNING uid`);
+        const cQueryRet = await pool.query(`
+            WITH ins AS (
+            INSERT INTO category (name) VALUES ${categories.map(c=>`('${c}')`)} 
+            ON CONFLICT (name) DO NOTHING 
+            RETURNING uid)
+            
+            SELECT * FROM ins UNION
+            SELECT uid FROM category WHERE name IN (${categories.map(c=>`'${c}'`)})
+            `);
+        
+
+        await pool.query(`
+        INSERT INTO activity_category (activity_id, category_id)
+        VALUES ${cQueryRet.rows.map(c=>`('${aQueryRet.rows[0].uid}', '${c.uid}')`)}
+        `)
+
+        ret = await pool.query('COMMIT');
+    }
+    catch(e){
+        ret = await pool.query('ROLLBACK');
+        console.log(e)
+    }
+
+    // console.log(ret);
+
+    res.send(200);
+});
+
 
 const port = 3000
 app.listen(port, ()=>{
