@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from '../styles/EventInput.module.css';
 
 import CreateActivity from "./CreateActivity";
 import CreateEvent from './CreateEvent';
+import { ActivityContext, CategoryContext } from './CalendarContext';
 
-export default function EventInput({activityList, categoryList}){
+export default function EventInput(){
+    const {activityList} = useContext(ActivityContext);
+    const {categoryList} = useContext(CategoryContext);
+
+
     const [createActivity, setCreateActivity] = useState(false);
     const [eventFormStates, setEventFormStates] = useState({
         title: "",
@@ -13,7 +18,7 @@ export default function EventInput({activityList, categoryList}){
         activity: ""
     })
     const [activityFormStates, setActivityFormStates] = useState({
-        title: "",
+        activity: "",
         categories: [""]
     })
 

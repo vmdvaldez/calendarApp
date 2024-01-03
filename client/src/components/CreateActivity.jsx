@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useContext } from "react";
 
-export default function CreateActivity({
-    setCreateActivity, 
-    categoryList,
-    activityState,
-    setActivityState}){
+import { CategoryContext } from './CalendarContext';
 
-        console.log(activityState)
-        const createCategoryInputs = ()=>{
+export default function CreateActivity({setCreateActivity, activityState, setActivityState}){
+    const {categoryList} = useContext(CategoryContext);
+
+    const createCategoryInputs = ()=>{
         const cInputs = []
         for(let i = 0; i < activityState.categories.length; i++){
             cInputs.push(
@@ -34,7 +32,7 @@ export default function CreateActivity({
         const url = import.meta.env.VITE_BACKEND_URL
         const port = import.meta.env.VITE_BACKEND_PORT
         const fullPath = `${protocol}${url}:${port}`
-        const resCat = await fetch(`${fullPath}/categories`, 
+        const resCat = await fetch(`${fullPath}/setactivity`, 
             {
                 method: "POST",
                 headers: {
@@ -42,18 +40,7 @@ export default function CreateActivity({
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({categories: activityState.categories})
-            }
-        )
-        const resAct = await fetch(`${fullPath}/activity`,
-            {
-                method: "POST",
-                headers: {
-                    mode: "cors",
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({activity: activityState.title})
+                body: JSON.stringify(activityState)
             }
         )
     }
@@ -64,8 +51,8 @@ export default function CreateActivity({
             <input 
                 type="text" 
                 name='title' 
-                value={activityState.title} 
-                onChange={e=>setActivityState({...activityState, title: e.target.value})}
+                value={activityState.activity} 
+                onChange={e=>setActivityState({...activityState, activity: e.target.value})}
                 required/>
             Categories {createCategoryInputs()}
             <datalist id="categoryList">

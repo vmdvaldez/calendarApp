@@ -3,13 +3,16 @@ import styles from '../styles/Calendar.module.css';
 import date from '../helper/date';
 
 import CalendarDay from './CalendarDay';
-import { useEffect, useState } from 'react';
+import { ActivityContext, CategoryContext } from './CalendarContext';
+import { useEffect, useState} from 'react';
+
 
 export default function Calendar(){
     const [month, setMonth] = useState((new Date()).getMonth());
     const [year, setYear] = useState((new Date).getFullYear());
     const [activityList, setActivityList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    // TODO: get events sorted in date
 
     const createCalendarDays = ()=>{
         const totalDays = date.getDaysInMonth(month, year);
@@ -17,8 +20,6 @@ export default function Calendar(){
         for (let i = 0; i < totalDays; i++){
             grids.push(
             <CalendarDay 
-                categoryList={categoryList}
-                activityList={activityList}
                 key={`${month}${i+1}${year}`} 
                 month={month} day={i+1} 
                 year={year}/>
@@ -90,15 +91,19 @@ export default function Calendar(){
     },[]);
 
     return(
-     <section className={styles.calendar}>
-        <div className={styles.container}>
-            <h1>{date.getMonth(month)} {year}</h1>
-            <div className={styles.grids}>
-                {createCalendarDays()}
-            </div>
-            <button onClick={goToPrevMonth}>Prev</button>
-            <button onClick={goToNextMonth}>Next</button>
-        </div>
-     </section>   
+    <ActivityContext.Provider value={{activityList, setActivityList}}>
+        <CategoryContext.Provider value={{categoryList, setCategoryList}}>
+            <section className={styles.calendar}>
+                <div className={styles.container}>
+                    <h1>{date.getMonth(month)} {year}</h1>
+                    <div className={styles.grids}>
+                        {createCalendarDays()}
+                    </div>
+                    <button onClick={goToPrevMonth}>Prev</button>
+                    <button onClick={goToNextMonth}>Next</button>
+                </div>
+            </section>   
+        </CategoryContext.Provider>
+    </ActivityContext.Provider>
     )
 }

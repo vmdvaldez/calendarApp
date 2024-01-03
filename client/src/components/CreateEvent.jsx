@@ -1,12 +1,10 @@
-import { useRef, useState } from "react";
+import { useContext } from "react";
 import styles from '../styles/CreateEvent.module.css';
+import { ActivityContext } from './CalendarContext';
 
-export default function CreateEvent({
-    activityList, 
-    setCreateActivity, 
-    eventStates, 
-    setEventStates}
-    ){
+export default function CreateEvent({ setCreateActivity, eventStates, setEventStates}){
+    const {activityList} = useContext(ActivityContext);
+
     return(
         <form action="" method=''>
             Title
