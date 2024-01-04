@@ -1,8 +1,10 @@
-import { useContext } from "react";
-
+import styles from "../styles/CreateActivity.module.css";
+import { useContext, useState } from "react";
 import { CategoryContext } from './CalendarContext';
 
+
 export default function CreateActivity({setCreateActivity, activityState, setActivityState}){
+    const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     const {categoryList} = useContext(CategoryContext);
 
     const createCategoryInputs = ()=>{
@@ -32,7 +34,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
         const url = import.meta.env.VITE_BACKEND_URL
         const port = import.meta.env.VITE_BACKEND_PORT
         const fullPath = `${protocol}${url}:${port}`
-        const resCat = await fetch(`${fullPath}/setactivity`, 
+        const res = await fetch(`${fullPath}/setactivity`, 
             {
                 method: "POST",
                 headers: {
@@ -43,9 +45,19 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
                 body: JSON.stringify(activityState)
             }
         )
+        const json = await res.json();
+
+        if(json.status >= 400){
+            console.log(json.message);
+        }else{
+            console.log(json.message);
+        }
+        console.log(json);
+        setCreateStatus(json)
     }
 
     return(
+        <>
         <form action="" method='' onSubmit={submitForm}>
             Activity
             <input 
@@ -70,5 +82,11 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
             }}>Back</button>
             <button type="submit">Submit</button>
         </form>
+        {createStatus.status >= 400 && 
+            <div className={styles.message}>
+                {createStatus.message}
+            </div>
+        }
+        </>
     )
 }
