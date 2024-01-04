@@ -39,21 +39,24 @@ app.post('/setactivity', async(req,res)=>{
         const aQueryRet = await pool.query(`
             INSERT INTO activity (name) VALUES ('${activity}') 
             RETURNING uid`);
-        const cQueryRet = await pool.query(`
-            WITH ins AS (
-            INSERT INTO category (name) VALUES ${ctg.map(c=>`('${c}')`)} 
-            ON CONFLICT (name) DO NOTHING 
-            RETURNING uid)
-            
-            SELECT * FROM ins UNION
-            SELECT uid FROM category WHERE name IN (${ctg.map(c=>`'${c}'`)})
-            `);
         
+        if (ctg.length){
+            const cQueryRet = await pool.query(`
+                WITH ins AS (
+                INSERT INTO category (name) VALUES ${ctg.map(c=>`('${c}')`)} 
+                ON CONFLICT (name) DO NOTHING 
+                RETURNING uid)
+                
+                SELECT * FROM ins UNION
+                SELECT uid FROM category WHERE name IN (${ctg.map(c=>`'${c}'`)})
+                `);
+            
+                await pool.query(`
+                INSERT INTO activity_category (activity_id, category_id)
+                VALUES ${cQueryRet.rows.map(c=>`('${aQueryRet.rows[0].uid}', '${c.uid}')`)}
+                `)
+        }
 
-        await pool.query(`
-        INSERT INTO activity_category (activity_id, category_id)
-        VALUES ${cQueryRet.rows.map(c=>`('${aQueryRet.rows[0].uid}', '${c.uid}')`)}
-        `)
 
         ret = await pool.query('COMMIT');
         res.status(201).send({
