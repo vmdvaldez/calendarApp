@@ -1,10 +1,11 @@
 import styles from "../styles/CreateActivity.module.css";
 import { useContext, useState } from "react";
-import { CategoryContext } from './CalendarContext';
+import { ActivityContext, CategoryContext } from './CalendarContext';
 
 
 export default function CreateActivity({setCreateActivity, activityState, setActivityState}){
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
+    const {activityList, setActivityList} = useContext(ActivityContext);
     const {categoryList} = useContext(CategoryContext);
 
     const createCategoryInputs = ()=>{
@@ -46,14 +47,16 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
             }
         )
         const json = await res.json();
+        setCreateStatus(json)
 
         if(json.status >= 400){
             console.log(json.message);
         }else{
             console.log(json.message);
+            setActivityState({activity: "", categories: [""]});
+            setActivityList([activityState.activity].concat(activityList)); // TODO: Automatically input in Event Activity?
+            setCreateActivity(false);
         }
-        console.log(json);
-        setCreateStatus(json)
     }
 
     return(
