@@ -29,9 +29,9 @@ app.get('/categories',async (req,res)=>{
 app.post('/setactivity', async(req,res)=>{
     // TODO : handle return
     console.log("POST TO setactivity");
-    console.log(req.body);
     const {activity, categories} = req.body;
 
+    const ctg = categories.filter(c => c.length > 0)
     let ret = "";
 
     await pool.query('BEGIN')
@@ -41,12 +41,12 @@ app.post('/setactivity', async(req,res)=>{
             RETURNING uid`);
         const cQueryRet = await pool.query(`
             WITH ins AS (
-            INSERT INTO category (name) VALUES ${categories.map(c=>`('${c}')`)} 
+            INSERT INTO category (name) VALUES ${ctg.map(c=>`('${c}')`)} 
             ON CONFLICT (name) DO NOTHING 
             RETURNING uid)
             
             SELECT * FROM ins UNION
-            SELECT uid FROM category WHERE name IN (${categories.map(c=>`'${c}'`)})
+            SELECT uid FROM category WHERE name IN (${ctg.map(c=>`'${c}'`)})
             `);
         
 
@@ -56,15 +56,20 @@ app.post('/setactivity', async(req,res)=>{
         `)
 
         ret = await pool.query('COMMIT');
+        res.status(201).send({
+            status: 201,
+            message: `Successfully Created Activity ${activity} with category: ${ctg.map(c=>` ${c}`)}`
+        });
     }
     catch(e){
         ret = await pool.query('ROLLBACK');
         console.log(e)
+
+        res.status(409).send({status: 409, message: "Error: Activity already exists"});
     }
 
-    // console.log(ret);
+    console.log(ret);
 
-    res.send(200);
 });
 
 
