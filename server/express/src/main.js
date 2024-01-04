@@ -27,7 +27,6 @@ app.get('/categories',async (req,res)=>{
     })
 
 app.post('/setactivity', async(req,res)=>{
-    // TODO : handle return
     console.log("POST TO setactivity");
     const {activity, categories} = req.body;
 
@@ -75,6 +74,41 @@ app.post('/setactivity', async(req,res)=>{
 
 });
 
+app.post('/createevent', async(req, res)=>{
+    console.log("POST TO setactivity");
+    console.log(req.body);
+    const event = req.body;
+
+    // TODO: check for invalid activity name
+
+    try{
+        const ret = await pool.query(`
+        INSERT INTO event (title, activity_id, calendar_date, time_start, time_end) 
+        VALUES (
+            '${event.title}',
+            (SELECT uid FROM activity WHERE name = '${event.activity}'),
+            '${event.date}',
+            '${event.start}',
+            '${event.end}}'
+            )
+        `);
+        
+        res.status(201).send({
+            status: 201,
+            message: `Event ${event.title} Successfully Created.`
+        })
+    }catch(e){
+        console.log(e);
+
+        res.status(409).send({
+            status: 409,
+            message: `Error: Unexpected error occured. Check if Activity is Valid`
+        });
+    }
+
+
+
+});
 
 const port = 3000
 app.listen(port, ()=>{

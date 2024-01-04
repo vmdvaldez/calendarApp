@@ -75,17 +75,26 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
                         return(<option key={category} value={category}>{category}</option>)
                     })}
             </datalist>
+
             <button type="button" onClick={()=>{
                 const newCategories = activityState.categories
                 newCategories.push("")
                 setActivityState({...activityState, categories: newCategories});
             }}>add</button>
+
+            <button type="button" onClick={()=>{
+                const newCategories = activityState.categories;
+                newCategories.pop()
+                setActivityState({...activityState, categories: newCategories});
+            }}>remove</button>
+
             <button type="button" onClick={()=>{
                 setCreateActivity(false);
             }}>Back</button>
+            
             <button type="submit">Submit</button>
         </form>
-        {createStatus.status >= 400 && 
+        {createStatus.status >= 300 && 
             <div className={styles.message}>
                 {createStatus.message}
             </div>

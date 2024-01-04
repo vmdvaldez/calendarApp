@@ -8,7 +8,7 @@ export default function CalendarDay({day, month, year}){
     return(
         <div className={styles.day  }
             onClick={()=>setClicked(!clicked)}>
-            {clicked && <EventInput />}
+            {clicked && <EventInput date={new Date(year, month, day)}/>}
             <div className={styles.num}>{day}</div>
             {/* ADD SUMMARY HERE */}
         </div>
