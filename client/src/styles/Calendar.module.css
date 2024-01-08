@@ -21,9 +21,10 @@
 .container input[type=month]{
     max-width: max-content;
     font-size: 4rem;
-    font-family: inherit;
+    /* font-family: inherit; */
 
     background-color: var(--color1);
+    color: var(--color3);
 }
 
 .container h1{
