@@ -6,7 +6,6 @@ export default function CalendarDay({day, month, year}){
     const [clicked, setClicked] = useState(false);
     const [events, setEvents] = useState([])
     const date = new Date(year, month, day).toISOString();
-
     useEffect(()=>{
         const grabEvents = async()=>{
             const protocol = "http://"
@@ -34,7 +33,12 @@ export default function CalendarDay({day, month, year}){
 
     return(
         <div className={styles.daycontainer} onClick={()=>setClicked(!clicked)}>
-            {clicked && <EventInput date={date}/>}
+            {clicked && 
+                <EventInput 
+                eventList={events} 
+                setEventList={setEvents} 
+                date={date}/>}
+
             <div className={styles.day}>
                 <div className={styles.num}>{day}</div>
                 <ul className={styles.eventsummary}>

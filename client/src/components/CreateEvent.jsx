@@ -2,11 +2,12 @@ import { useContext, useState } from "react";
 import styles from '../styles/CreateEvent.module.css';
 import { ActivityContext } from './CalendarContext';
 
-export default function CreateEvent({ setCreateActivity, eventStates, setEventStates, date}){
+export default function CreateEvent({ setCreateActivity, eventStates, 
+    setEventStates, date, eventList, setEventList}){
     const {activityList} = useContext(ActivityContext);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     const day = (new Date(date)).getDate();
-
+    console.log(eventStates);
     const submitForm = async (e) =>{
         e.preventDefault();
         const protocol = "http://"
@@ -25,10 +26,14 @@ export default function CreateEvent({ setCreateActivity, eventStates, setEventSt
             }
         )
         const json = await res.json();
-        json.status = 101
-        console.log(json)
+        if (json.status < 300){
+            setEventList(eventList.concat([{ 
+                id: json.eventid , 
+                title: eventStates.title, 
+                activity:eventStates.activity
+            }]))
+        }
         setCreateStatus(json);
-
     };
 
     return(

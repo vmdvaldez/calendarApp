@@ -5,7 +5,7 @@ import CreateActivity from "./CreateActivity";
 import CreateEvent from './CreateEvent';
 import { ActivityContext, CategoryContext } from './CalendarContext';
 
-export default function EventInput({date}){
+export default function EventInput({date, eventList, setEventList}){
     const {activityList} = useContext(ActivityContext);
     const {categoryList} = useContext(CategoryContext);
 
@@ -33,6 +33,8 @@ export default function EventInput({date}){
         <div className={styles.modal} onClick={(e)=>{e.stopPropagation()}}>
             {!createActivity ? 
                 <CreateEvent
+                    eventList={eventList}
+                    setEventList={setEventList}
                     date={date}
                     activityList={activityList}
                     setCreateActivity={setCreateActivity}

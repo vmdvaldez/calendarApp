@@ -26,6 +26,19 @@ app.get('/categories',async (req,res)=>{
         res.send(q.rows);
     })
 
+app.get('/events', async(req,res)=>{
+    //TODO: return activity name instead of ID
+    //TODO: SORT BY calendar_date
+    // console.log("REQUESTING EVENTS");
+
+    // console.log(req.query);
+    const date = req.query.date;
+    const q = await pool.query(`
+        SELECT event.uid AS id, title, name AS activity FROM event JOIN activity ON activity_id = activity.uid WHERE '${date}' = calendar_date;
+    `)
+    res.send(q.rows);
+});
+
 app.post('/setactivity', async(req,res)=>{
     console.log("POST TO setactivity");
     const {activity, categories} = req.body;
@@ -81,6 +94,7 @@ app.post('/createevent', async(req, res)=>{
 
     // TODO: check for invalid activity name
 
+
     try{
         const ret = await pool.query(`
         INSERT INTO event (title, activity_id, calendar_date, time_start, time_end) 
@@ -91,11 +105,14 @@ app.post('/createevent', async(req, res)=>{
             '${event.start}',
             '${event.end}}'
             )
+        RETURNING uid AS id
         `);
+
         
         res.status(201).send({
             status: 201,
-            message: `Event ${event.title} Successfully Created.`
+            message: `Event ${event.title} Successfully Created.`,
+            eventid: ret.rows[0].id
         })
     }catch(e){
         console.log(e);
