@@ -101,12 +101,14 @@ export default function Calendar(){
                             type="month"
                             value={`${year}-${(month+1) < 10 ? `0${month+1}` : month + 1}`}
                             onKeyDown={(e)=>e.preventDefault()}
+                            onBlur={()=>{setJumpTo(false)}}
                             onChange={(e)=>{
                                 const [year, month] = e.target.value.split("-");
                                 setMonth(+month - 1)
                                 setYear(+year)
                                 setJumpTo(false);
                             }}
+                            onFocus={(e)=>e.target.showPicker()}
                             autoFocus
                         /> : 
                         <h1 onClick={()=>{

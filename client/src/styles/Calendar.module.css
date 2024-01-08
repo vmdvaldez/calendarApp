@@ -29,8 +29,8 @@
 
 
 .container input[type=month]{
-    max-width: 10vw;
-    height: 2vh;
+    max-width: max-content;
+    font-size: 4rem;
 }
 
 
