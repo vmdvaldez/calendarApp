@@ -13,6 +13,8 @@
 
 .container h1{
     font-size: 5rem;
+    max-width: max-content;
+    cursor: pointer;
 }
 
 .grids{
@@ -26,7 +28,10 @@
 }
 
 
-
+.container input[type=month]{
+    max-width: 10vw;
+    height: 2vh;
+}
 
 
 

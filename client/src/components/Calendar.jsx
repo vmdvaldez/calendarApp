@@ -12,6 +12,7 @@ export default function Calendar(){
     const [year, setYear] = useState((new Date).getFullYear());
     const [activityList, setActivityList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [jumpTo, setJumpTo] = useState(false);
     // TODO: get events sorted in date
 
     const createCalendarDays = ()=>{
@@ -89,13 +90,29 @@ export default function Calendar(){
             setCategoryList(categories.map(category=>category.name));
         });
     },[]);
-
+    
     return(
     <ActivityContext.Provider value={{activityList, setActivityList}}>
         <CategoryContext.Provider value={{categoryList, setCategoryList}}>
             <section className={styles.calendar}>
                 <div className={styles.container}>
-                    <h1>{date.getMonth(month)} {year}</h1>
+                    {jumpTo ?
+                        <input 
+                            type="month"
+                            value={`${year}-${(month+1) < 10 ? `0${month+1}` : month + 1}`}
+                            onKeyDown={(e)=>e.preventDefault()}
+                            onChange={(e)=>{
+                                const [year, month] = e.target.value.split("-");
+                                setMonth(+month - 1)
+                                setYear(+year)
+                                setJumpTo(false);
+                            }}
+                            autoFocus
+                        /> : 
+                        <h1 onClick={()=>{
+                            setJumpTo(true);
+                        }}>{date.getMonth(month)} {year} </h1>
+                    }
                     <div className={styles.grids}>
                         {createCalendarDays()}
                     </div>
