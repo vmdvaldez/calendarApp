@@ -33,18 +33,19 @@ export default function CalendarDay({day, month, year}){
     // TODO: Add Event Grabbing
 
     return(
-        <div className={styles.day  }
-            onClick={()=>setClicked(!clicked)}>
+        <div className={styles.daycontainer} onClick={()=>setClicked(!clicked)}>
             {clicked && <EventInput date={date}/>}
-            <div className={styles.num}>{day}</div>
-            <ul>
-                {events.map(e=>{
-                    return(
-                        <li>{e.title}</li>
-                    )
-                })}
-            </ul>
-            {/* ADD SUMMARY HERE */}
+            <div className={styles.day}>
+                <div className={styles.num}>{day}</div>
+                <ul className={styles.eventsummary}>
+                    {events.map(e=>{
+                        return(
+                            <li>{e.title}</li>
+                        )
+                    })}
+                </ul>
+                {/* ADD SUMMARY HERE */}
+            </div>
         </div>
     )
 }

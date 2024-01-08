@@ -1,0 +1,21 @@
+.formcontainer{
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    color: var(--color3);
+
+}
+
+.formcontainer input{
+    background-color: var(--color3);
+}
+
+.eventactivity button{
+    margin-left: 5px;
+}
+
+.formcontainer button[type=submit]{
+    margin-top: 10px;
+}

@@ -3,11 +3,11 @@ import { useContext, useState } from "react";
 import { ActivityContext, CategoryContext } from './CalendarContext';
 
 
-export default function CreateActivity({setCreateActivity, activityState, setActivityState}){
+export default function CreateActivity({setCreateActivity, activityState, setActivityState, date}){
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     const {activityList, setActivityList} = useContext(ActivityContext);
     const {categoryList} = useContext(CategoryContext);
-
+    const day = (new Date(date)).getDate();
     const createCategoryInputs = ()=>{
         const cInputs = []
         for(let i = 0; i < activityState.categories.length; i++){
@@ -61,38 +61,49 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
 
     return(
         <>
-        <form action="" method='' onSubmit={submitForm}>
-            Activity
+        <form className={styles.formcontainer} action="" method='' onSubmit={submitForm}>
+            <label htmlFor={`activity_title_${day}`}>Activity</label>
             <input 
                 type="text" 
-                name='title' 
+                name='title'
+                id={`activity_title_${day}`} 
                 value={activityState.activity} 
                 onChange={e=>setActivityState({...activityState, activity: e.target.value})}
                 required/>
-            Categories {createCategoryInputs()}
+            <label>Categories</label> {createCategoryInputs()}
             <datalist id="categoryList">
                     {categoryList.map(category=>{
                         return(<option key={category} value={category}>{category}</option>)
                     })}
             </datalist>
 
-            <button type="button" onClick={()=>{
-                const newCategories = activityState.categories
-                newCategories.push("")
-                setActivityState({...activityState, categories: newCategories});
-            }}>add</button>
+            <div className={styles.categorybuttons}>
+                <button 
+                    type="button" 
+                    onClick={()=>{
+                        const newCategories = activityState.categories
+                        newCategories.push("")
+                        setActivityState({...activityState, categories: newCategories});
+                        }}>add</button>
 
-            <button type="button" onClick={()=>{
-                const newCategories = activityState.categories;
-                newCategories.pop()
-                setActivityState({...activityState, categories: newCategories});
-            }}>remove</button>
+                <button 
+                    type="button" 
+                    onClick={()=>{
+                        const newCategories = activityState.categories;
+                        newCategories.pop()
+                        setActivityState({...activityState, categories: newCategories});
+                }}>remove</button>
+            </div>
 
-            <button type="button" onClick={()=>{
-                setCreateActivity(false);
-            }}>Back</button>
-            
-            <button type="submit">Submit</button>
+            <div className={styles.backsubmit}>
+                <button 
+                    type="button" 
+                    onClick={()=>{
+                    setCreateActivity(false);
+                }}>Back</button>
+                
+                <button type="submit">Submit</button>
+            </div>
         </form>
         {createStatus.status >= 300 && 
             <div className={styles.message}>

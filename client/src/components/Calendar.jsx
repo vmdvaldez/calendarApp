@@ -118,8 +118,10 @@ export default function Calendar(){
                     <div className={styles.grids}>
                         {createCalendarDays()}
                     </div>
-                    <button onClick={goToPrevMonth}>Prev</button>
-                    <button onClick={goToNextMonth}>Next</button>
+                    <div className={styles.buttons}>
+                        <button onClick={goToPrevMonth}>Prev</button>
+                        <button onClick={goToNextMonth}>Next</button>
+                    </div>
                 </div>
             </section>   
         </CategoryContext.Provider>

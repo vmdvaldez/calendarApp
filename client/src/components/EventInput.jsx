@@ -41,6 +41,7 @@ export default function EventInput({date}){
                 /> :  
                 
                 <CreateActivity 
+                    date={date}
                     setCreateActivity={setCreateActivity}
                     categoryList={categoryList}
                     activityState={activityFormStates}

@@ -1,14 +1,33 @@
+/*https://fonts.google.com/specimen/Bebas+Neue*/
 :root{
-  box-sizing: border-box;
+  --color1: #b85042;
+  /* --color2: #E7E8D1; */
+  --color2: #c6c7be;
+  --color3: #A7BEAE;
+  --color4: #190b09;
+  --fontStyle1: 'Bebas Neue', sans-serif;;
 }
 
+:root{
+  --color1: #2d3142;
+  --color2: #bfc0c0;
+  --color3: #E2E2E2;
+  --color4: #2d3142;
+}
+
+
 html,body{
-  height: 100vh;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
 }
 
 * {
+  font-family: var(--fontStyle1);
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 /* * {
@@ -16,6 +35,7 @@ html,body{
 } */
 
 #root{
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;

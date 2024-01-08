@@ -1,25 +1,40 @@
 .calendar{
-    padding: 1%;
     display: flex;
     flex: 1;
+    background-color: var(--color2);
+    padding: 1%;
 }
 
 .container{
     flex: 1;
+    padding: 1%;
     
     display: flex;
     flex-direction: column;
+
+    background-color: var(--color1);
+
+    /* border: 1px solid black; */
+    /* box-shadow: 0px 0px 5px 0px black; */
+}
+
+.container input[type=month]{
+    max-width: max-content;
+    font-size: 4rem;
+    font-family: inherit;
+
+    background-color: var(--color1);
 }
 
 .container h1{
-    font-size: 5rem;
+    font-size: 4rem;
     max-width: max-content;
     cursor: pointer;
 }
 
 .grids{
+    flex: 1;
     padding: 5px;
-    background-color: rgba(128, 128, 128, 0.679);
     display: grid;
     gap: 5px;
 
@@ -27,11 +42,14 @@
     grid-auto-rows: 10vw;
 }
 
-
-.container input[type=month]{
-    max-width: max-content;
-    font-size: 4rem;
+.buttons{
+    display: flex;
+    justify-content: space-between;
 }
+
+
+
+
 
 
 

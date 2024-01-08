@@ -5,6 +5,7 @@ import { ActivityContext } from './CalendarContext';
 export default function CreateEvent({ setCreateActivity, eventStates, setEventStates, date}){
     const {activityList} = useContext(ActivityContext);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
+    const day = (new Date(date)).getDate();
 
     const submitForm = async (e) =>{
         e.preventDefault();
@@ -32,33 +33,41 @@ export default function CreateEvent({ setCreateActivity, eventStates, setEventSt
 
     return(
         <>
-            <form action="" method='' onSubmit={submitForm}>
-                Title
+            <form className={styles.formcontainer} onSubmit={submitForm}>
+                <label htmlFor={`event_name_${day}`}>Title</label>
                 <input 
                     type="text" 
                     name='title'
+                    id={`event_name_${day}`}
                     value={eventStates.title}
                     onChange={e=>setEventStates({...eventStates, title: e.target.value})} 
                     required />
-                Start
+                <label htmlFor={`event_start_time_${day}`}>Start Time</label>
                 <input 
                     type='time' 
-                    name='start_time' 
+                    name='start_time'
+                    id={`event_start_time_${day}`}
                     value={eventStates.start}
                     onChange={e=>setEventStates({...eventStates, start: e.target.value})}
                     />
-                End
+                <label htmlFor={`event_end_time${day}`}>End Time</label> 
                 <input 
                     type='time' 
-                    name='end_time' 
+                    name='end_time'
+                    id={`event_end_time${day}`} 
                     value={eventStates.end}
                     onChange={e=>setEventStates({...eventStates, end: e.target.value})}
                     />
-
-                Activity
+                <div className={styles.eventactivity}>
+                    <label htmlFor={`event_activity_${day}`}>Activity</label>
+                    <button type="button"
+                        onClick={()=>{setCreateActivity(true)}}
+                    >add</button>
+                </div>
                 <input type="text" 
                     name="activity" 
-                    list="activityList" 
+                    list="activityList"
+                    id={`event_activity_${day}`}
                     autoComplete='off'
                     onBlur={(e)=>{
                         const elem = e.target
@@ -71,9 +80,7 @@ export default function CreateEvent({ setCreateActivity, eventStates, setEventSt
                     value={eventStates.activity}
                     onChange={e=>setEventStates({...eventStates, activity: e.target.value})}
                 />
-                <button type="button"
-                    onClick={()=>{setCreateActivity(true)}}
-                >add</button>
+
                 
                 <datalist id="activityList">
                     {activityList.map(activity=>{
