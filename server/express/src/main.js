@@ -31,10 +31,8 @@ app.get('/events', async(req,res)=>{
     //TODO: SORT BY calendar_date
     // console.log("REQUESTING EVENTS");
 
-    // console.log(req.query);
     const eventId = req.query.id
     const date = req.query.date;
-    // TODO MAKE array categories https://stackoverflow.com/questions/60998663/merge-rows-same-values-in-postgresql-based-on-row-difference
     if (eventId != undefined){
         const q = await pool.query(`
             SELECT e.uid AS id, e.title AS title,   to_char(time_start, 'HH:MM AM') AS time_start,  to_char(time_end, 'HH:MM AM') AS time_end, 
@@ -50,8 +48,14 @@ app.get('/events', async(req,res)=>{
     }
     else{
         const q = await pool.query(`
-            SELECT event.uid AS id, title, name AS activity FROM event JOIN activity ON activity_id = activity.uid WHERE '${date}' = calendar_date;
+            SELECT event.uid AS id, title, name  AS activity, 
+            to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
+            FROM event 
+            JOIN activity ON activity_id = activity.uid 
+            WHERE '${date}' = calendar_date
+            ORDER BY time_start ASC;
         `)
+        console.log(q.rows)
         res.send(q.rows);
     }
 

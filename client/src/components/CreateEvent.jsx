@@ -27,11 +27,25 @@ export default function CreateEvent({ setCreateActivity, eventStates,
         )
         const json = await res.json();
         if (json.status < 300){
-            setEventList(eventList.concat([{ 
+            const newEventList = eventList.concat([{ 
                 id: json.eventid , 
                 title: eventStates.title, 
-                activity:eventStates.activity
-            }]))
+                activity:eventStates.activity,
+                time_start: eventStates.start,
+                time_end: eventStates.end
+            }]);
+            
+            newEventList.sort((a,b)=>{
+                if (a.time_start < b.time_start) return -1
+                
+                if (a.time_start > b.time_start) return 1
+
+                if (a.time_end < b.time_end) return -1
+
+                if (a.time_end > a.time_end) return 1
+                return 0
+            })
+            setEventList(newEventList)
         }
         setCreateStatus(json);
         clearEventStates()
