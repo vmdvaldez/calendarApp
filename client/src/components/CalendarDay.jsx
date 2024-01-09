@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from '../styles/CalendarDay.module.css';
 import EventInput from './EventInput';
+import EventSummary from './EventSummary';
 
 export default function CalendarDay({day, month, year}){
     const [clicked, setClicked] = useState(false);
+    const [eventClicked, setEventClicked] = useState({id: null, clicked: false});
     const [events, setEvents] = useState([])
     const date = new Date(year, month, day).toISOString();
     useEffect(()=>{
@@ -38,13 +40,29 @@ export default function CalendarDay({day, month, year}){
                 eventList={events} 
                 setEventList={setEvents} 
                 date={date}/>}
+            
+
 
             <div className={styles.day}>
                 <div className={styles.num}>{day}</div>
                 <ul className={styles.eventsummary}>
-                    {events.map(e=>{
+                    {events.map(ev=>{
                         return(
-                            <li>{e.title}</li>
+                            <>
+                            {eventClicked.id == ev.id &&
+                                <EventSummary eventId={ev.id}/>}
+                            <li key={ev.id}
+                                onClick={(e)=>{
+                                    e.stopPropagation();
+                                    if (eventClicked.id == ev.id){
+                                        setEventClicked({id: null, clicked: false});
+                                    }
+                                    else{
+                                        setEventClicked({id: ev.id, clicked: true});
+                                    }
+                                    }}>
+                            {ev.title}</li>
+                            </>
                         )
                     })}
                 </ul>

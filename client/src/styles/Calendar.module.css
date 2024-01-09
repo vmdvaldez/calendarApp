@@ -3,6 +3,7 @@
     flex: 1;
     background-color: var(--color2);
     padding: 1%;
+    
 }
 
 .container{
@@ -50,11 +51,7 @@
 }
 
 
-
-
-
-
-
+/* 
 @media (max-width:  700px) {
     .container h1{
         font-size: 2rem;
@@ -72,4 +69,4 @@
         grid-auto-rows: 18vw;
     }
     
-}
+} */
