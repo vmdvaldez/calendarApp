@@ -23,6 +23,14 @@ export default function EventInput({date, eventList, setEventList}){
     })
 
 
+    const clearEventStates = ()=>{
+        setEventFormStates({
+            title: "",
+            start: "00:00",
+            end: "23:59",
+            activity: ""
+        })
+    }
     // ON submit for create activity return change state to createEvent
     // On submit reset Create Activity inputs
 
@@ -40,6 +48,7 @@ export default function EventInput({date, eventList, setEventList}){
                     setCreateActivity={setCreateActivity}
                     eventStates={eventFormStates}
                     setEventStates={setEventFormStates}
+                    clearEventStates={clearEventStates}
                 /> :  
                 
                 <CreateActivity 

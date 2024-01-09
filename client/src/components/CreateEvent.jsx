@@ -3,7 +3,7 @@ import styles from '../styles/CreateEvent.module.css';
 import { ActivityContext } from './CalendarContext';
 
 export default function CreateEvent({ setCreateActivity, eventStates, 
-    setEventStates, date, eventList, setEventList}){
+    setEventStates, date, eventList, setEventList, clearEventStates}){
     const {activityList} = useContext(ActivityContext);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     const day = (new Date(date)).getDate();
@@ -34,6 +34,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
             }]))
         }
         setCreateStatus(json);
+        clearEventStates()
     };
 
     return(
