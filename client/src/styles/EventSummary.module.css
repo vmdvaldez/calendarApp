@@ -36,3 +36,6 @@
     list-style-type: none;
 }
 
+.modal button{
+    margin-top: 5px;
+}

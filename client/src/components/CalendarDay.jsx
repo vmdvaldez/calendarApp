@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import styles from '../styles/CalendarDay.module.css';
 import EventInput from './EventInput';
 import EventSummary from './EventSummary';
@@ -31,6 +31,14 @@ export default function CalendarDay({day, month, year}){
 
     },[month, day, year]);
 
+    function removeEventById(id){
+        for (let i = 0; i < events.length; i++){
+            if (events[i].id == id){
+                setEvents(events.toSpliced(i, 1));
+            }
+        }
+    }
+
     // TODO: Add Event Grabbing
 
     return(
@@ -48,10 +56,13 @@ export default function CalendarDay({day, month, year}){
                 <ul className={styles.eventsummary}>
                     {events.map(ev=>{
                         return(
-                            <>
+                            <Fragment key={ev.id}>
                             {eventClicked.id == ev.id &&
-                                <EventSummary eventId={ev.id}/>}
-                            <li key={ev.id}
+                                <EventSummary 
+                                    eventId={ev.id}
+                                    removeEventById={removeEventById}
+                                    />}
+                            <li
                                 onClick={(e)=>{
                                     e.stopPropagation();
                                     if (eventClicked.id == ev.id){
@@ -59,14 +70,13 @@ export default function CalendarDay({day, month, year}){
                                     }
                                     else{
                                         setEventClicked({id: ev.id, clicked: true});
-                                    }
-                                    }}>
+                                    }}}
+                                    >
                             {ev.title}</li>
-                            </>
+                            </Fragment>
                         )
                     })}
                 </ul>
-                {/* ADD SUMMARY HERE */}
             </div>
         </div>
     )

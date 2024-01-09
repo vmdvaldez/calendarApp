@@ -35,7 +35,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
         const url = import.meta.env.VITE_BACKEND_URL
         const port = import.meta.env.VITE_BACKEND_PORT
         const fullPath = `${protocol}${url}:${port}`
-        const res = await fetch(`${fullPath}/setactivity`, 
+        const res = await fetch(`${fullPath}/activity`, 
             {
                 method: "POST",
                 headers: {

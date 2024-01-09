@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from '../styles/EventSummary.module.css';
-export default function EventSummary({eventId}){
+export default function EventSummary({eventId, removeEventById}){
     const [eventInfo, setEventInfo] = useState(null);
     useEffect(()=>{
         const grabEvents = async()=>{
@@ -25,7 +25,6 @@ export default function EventSummary({eventId}){
 
     },[eventId]);
 
-    console.log(eventInfo);
     // TODO add Description per event?
     return(
         <div className={styles.modal} onClick={(e)=>{e.stopPropagation()}}>
@@ -36,10 +35,17 @@ export default function EventSummary({eventId}){
                 <div className={styles.activityInfo}>
                 <h2>{eventInfo.activity}</h2>
                     <ul className={styles.categories}>
-                        {eventInfo.categories.map(category=><li>{category}</li>)}
+                        {eventInfo.categories.map(category=>{
+                            return(
+                                <li key={`${eventInfo.id}_${category}`}>{category}</li>
+                            )}
+                        )}
                     </ul>
                 </div>
                 <p className={styles.time}>Created: {eventInfo.date_created}</p>
+                <button type="button" onClick={()=>{
+                    removeEventById(eventInfo.id);
+                }}>Delete</button>
                 </>
             }
         </div>

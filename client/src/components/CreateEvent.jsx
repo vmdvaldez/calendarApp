@@ -14,7 +14,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
         const url = import.meta.env.VITE_BACKEND_URL
         const port = import.meta.env.VITE_BACKEND_PORT
         const fullPath = `${protocol}${url}:${port}`
-        const res = await fetch(`${fullPath}/createevent`, 
+        const res = await fetch(`${fullPath}/events`, 
             {
                 method: "POST",
                 headers: {
