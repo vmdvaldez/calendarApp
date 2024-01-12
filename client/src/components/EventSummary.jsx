@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from '../styles/EventSummary.module.css';
 export default function EventSummary({eventId, removeEventById}){
     const [eventInfo, setEventInfo] = useState(null);
+    const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     useEffect(()=>{
         const grabEvents = async()=>{
             const protocol = "http://"
@@ -43,9 +44,30 @@ export default function EventSummary({eventId, removeEventById}){
                     </ul>
                 </div>
                 <p className={styles.time}>Created: {eventInfo.date_created}</p>
-                <button type="button" onClick={()=>{
-                    removeEventById(eventInfo.id);
+                <button type="button" onClick={async ()=>{
+                        const protocol = "http://"
+                        const url = import.meta.env.VITE_BACKEND_URL
+                        const port = import.meta.env.VITE_BACKEND_PORT
+                        const fullPath = `${protocol}${url}:${port}`
+                        const res = await fetch(`${fullPath}/events/${eventId}`, 
+                            {
+                                method: "DELETE",
+                                headers: {
+                                    mode: "cors",
+                                }
+                            }
+                        )
+                        console.log(res)
+                        const json = await res.json()
+                        console.log(json)
+                    if (json.status == 200){
+                        removeEventById(eventInfo.id);
+                    }
+                    setCreateStatus(json);
                 }}>Delete</button>
+                {createStatus.status >= 300 && 
+                    <p className={styles.error}>{createStatus.message}</p>
+                }
                 </>
             }
         </div>

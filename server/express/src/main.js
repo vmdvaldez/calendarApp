@@ -67,10 +67,6 @@ app.route('/activity')
         console.log(ret);
     
     })
-    .delete(async (req,res)=>{
-        // TODO no user can just enter any params to delete content
-        console.log(req.query);
-    })
 
 // QUERY SPECIFIC ACTIVITY app.route('/activty/:id')
 
@@ -149,6 +145,30 @@ app.route('/events')
     
     
     
+    });
+
+// TODO:
+app.route('/events/:id')
+    .delete(async(req,res)=>{
+        console.log("DELETING", req.params);
+        try{
+            const q = await pool.query(`
+                DELETE from event WHERE uid = '${req.params.id}'
+                RETURNING uid, title
+            `);
+            res.status(200).send({
+                status: 200,
+                message: `Successefully Deleted event ${q.rows[0].title}`
+            });
+        }
+        catch(e){
+            console.log(e);
+            res.status(409).send({
+                status: 409,
+                message: `Error: Unexpected error occured. Check if Event id exists Valid`
+            })
+        }
+
     })
 
 const port = 3000

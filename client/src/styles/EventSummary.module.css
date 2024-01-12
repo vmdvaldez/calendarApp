@@ -39,3 +39,8 @@
 .modal button{
     margin-top: 5px;
 }
+
+.error{
+    color: red;
+    font-size: 1rem;
+}
