@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from '../styles/EventSummary.module.css';
-export default function EventSummary({eventId, removeEventById}){
+export default function EventSummary({eventId, removeEventById, displayRight}){
     const [eventInfo, setEventInfo] = useState(null);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     useEffect(()=>{
@@ -27,7 +27,9 @@ export default function EventSummary({eventId, removeEventById}){
 
     // TODO add Description per event?
     return(
-        <div className={styles.modal} onClick={(e)=>{e.stopPropagation()}}>
+        <div 
+            className={displayRight ? styles.modalRight : styles.modalLeft} 
+            onClick={(e)=>{e.stopPropagation()}}>
             {eventInfo && 
                 <>
                 <h1>{eventInfo.title}</h1>

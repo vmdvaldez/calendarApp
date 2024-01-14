@@ -1,4 +1,5 @@
-.modal {
+.modalLeft,
+.modalRight {
     background-color: rgba(0, 0, 0, 0.759);
     border: 1px solid black;
 
@@ -6,7 +7,6 @@
     
     position: absolute;
     top: 0;
-    left: 100%;
     z-index: 1;
 
     display: flex;
@@ -16,6 +16,14 @@
     flex-direction: column;
     min-width: max-content;
     
+}
+
+.modalLeft {
+    right: 100%;
+}
+
+.modalRight {
+    left: 100%;
 }
 
 

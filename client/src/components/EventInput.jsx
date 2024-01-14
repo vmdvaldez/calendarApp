@@ -5,7 +5,7 @@ import CreateActivity from "./CreateActivity";
 import CreateEvent from './CreateEvent';
 import { ActivityContext, CategoryContext } from './CalendarContext';
 
-export default function EventInput({date, eventList, setEventList}){
+export default function EventInput({date, eventList, setEventList, displayRight}){
     const {activityList} = useContext(ActivityContext);
     const {categoryList} = useContext(CategoryContext);
 
@@ -38,7 +38,9 @@ export default function EventInput({date, eventList, setEventList}){
     // SEPARATE EACH CREATION EVENT TO DIFFERENT COMPONENTS
 
     return(
-        <div className={styles.modal} onClick={(e)=>{e.stopPropagation()}}>
+        <div 
+            className={displayRight ? styles.modalRight : styles.modalLeft} 
+            onClick={(e)=>{e.stopPropagation()}}>
             {!createActivity ? 
                 <CreateEvent
                     eventList={eventList}

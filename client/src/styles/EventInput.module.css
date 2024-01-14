@@ -1,4 +1,4 @@
-.modal {
+/* .modal {
     background-color: rgba(0, 0, 0, 0.759);
     border: 1px solid black;
 
@@ -6,8 +6,28 @@
     
     position: absolute;
     top: 0;
-    left: 100%;
     z-index: 1;
 
     display: flex;
+} */
+
+.modalRight,
+.modalLeft {
+    background-color: rgba(0, 0, 0, 0.759);
+    border: 1px solid black;
+
+    padding: 3%;
+    
+    position: absolute;
+    top: 0;
+    z-index: 1;
+
+    display: flex;
+}
+
+.modalLeft {
+    right: 100%;
+}
+.modalRight{
+    left: 100%;
 }

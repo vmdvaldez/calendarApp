@@ -34,7 +34,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
                 time_start: eventStates.start,
                 time_end: eventStates.end
             }]);
-            
+
             newEventList.sort((a,b)=>{
                 if (a.time_start < b.time_start) return -1
                 
@@ -48,7 +48,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
             setEventList(newEventList)
         }
         setCreateStatus(json);
-        clearEventStates()
+        clearEventStates();
     };
 
     return(

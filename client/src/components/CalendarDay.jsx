@@ -4,7 +4,7 @@ import EventInput from './EventInput';
 import EventSummary from './EventSummary';
 
 export default function CalendarDay({day, month, year}){
-    const [clicked, setClicked] = useState(false);
+    const [clicked, setClicked] = useState({clicked: false, displayRight: true});
     const [eventClicked, setEventClicked] = useState({id: null, clicked: false});
     const [events, setEvents] = useState([])
     const date = new Date(year, month, day).toISOString();
@@ -39,18 +39,20 @@ export default function CalendarDay({day, month, year}){
         }
     }
 
-    // TODO: Add Event Grabbing
-
     return(
-        <div className={styles.daycontainer} onClick={()=>setClicked(!clicked)}>
-            {clicked && 
+        <div className={styles.daycontainer} onClick={(e)=>{
+            setClicked({clicked: !clicked.clicked, 
+                displayRight: e.pageX <= window.screen.width/2})
+            }}>
+
+            {clicked.clicked && 
                 <EventInput 
-                eventList={events} 
-                setEventList={setEvents} 
-                date={date}/>}
+                    displayRight={clicked.displayRight}
+                    eventList={events} 
+                    setEventList={setEvents} 
+                    date={date}/>
+            }
             
-
-
             <div className={styles.day}>
                 <div className={styles.num}>{day}</div>
                 <ul className={styles.eventsummary}>
@@ -59,17 +61,19 @@ export default function CalendarDay({day, month, year}){
                             <Fragment key={ev.id}>
                             {eventClicked.id == ev.id &&
                                 <EventSummary 
+                                    displayRight={eventClicked.displayRight}
                                     eventId={ev.id}
                                     removeEventById={removeEventById}
                                     />}
                             <li
                                 onClick={(e)=>{
                                     e.stopPropagation();
+                                    
                                     if (eventClicked.id == ev.id){
-                                        setEventClicked({id: null, clicked: false});
+                                        setEventClicked({id: null, clicked: false, displayRight: e.pageX <= window.screen.width/2});
                                     }
                                     else{
-                                        setEventClicked({id: ev.id, clicked: true});
+                                        setEventClicked({id: ev.id, clicked: true, displayRight: e.pageX <= window.screen.width/2});
                                     }}}
                                     >
                             {ev.title}</li>
