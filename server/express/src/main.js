@@ -80,32 +80,16 @@ app.route('/events')
     .get(async(req,res)=>{
     // console.log("REQUESTING EVENTS");
 
-    const eventId = req.query.id
     const date = req.query.date;
-    if (eventId != undefined){
-        const q = await pool.query(`
-            SELECT e.uid AS id, e.title AS title,   to_char(time_start, 'HH:MM AM') AS time_start,  to_char(time_end, 'HH:MM AM') AS time_end, 
-            act.name AS activity, ARRAY_AGG(cat.name) AS categories , to_char(date_created, 'MONTH DD, YYYY') AS date_created  
-            FROM event AS e 
-            JOIN activity AS act ON act.uid = e.activity_id
-            JOIN activity_category AS ac  ON act.uid = ac.activity_id
-            JOIN category AS cat ON cat.uid = ac.category_id
-            WHERE e.uid = '${eventId}'
-            GROUP BY (e.uid, act.name);
-        `)
-        res.send(q.rows[0]);
-    }
-    else{
-        const q = await pool.query(`
-            SELECT event.uid AS id, title, name  AS activity, 
-            to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
-            FROM event 
-            JOIN activity ON activity_id = activity.uid 
-            WHERE '${date}' = calendar_date
-            ORDER BY time_start ASC;
-        `)
-        res.send(q.rows);
-    }
+    const q = await pool.query(`
+        SELECT event.uid AS id, title, name  AS activity, 
+        to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
+        FROM event 
+        JOIN activity ON activity_id = activity.uid 
+        WHERE '${date}' = calendar_date
+        ORDER BY time_start ASC;
+    `)
+    res.send(q.rows);
 
     })
     .post(async(req, res)=>{
@@ -149,8 +133,23 @@ app.route('/events')
 
 // TODO:
 app.route('/events/:id')
+    .get(async(req,res)=>{
+        console.log("ID event");
+        
+        const eventId = req.params.id;
+        const q = await pool.query(`
+        SELECT e.uid AS id, e.title AS title,   to_char(time_start, 'HH:MM AM') AS time_start,  to_char(time_end, 'HH:MM AM') AS time_end, 
+        act.name AS activity, ARRAY_AGG(cat.name) AS categories , to_char(date_created, 'MONTH DD, YYYY') AS date_created  
+        FROM event AS e 
+        JOIN activity AS act ON act.uid = e.activity_id
+        JOIN activity_category AS ac  ON act.uid = ac.activity_id
+        JOIN category AS cat ON cat.uid = ac.category_id
+        WHERE e.uid = '${eventId}'
+        GROUP BY (e.uid, act.name);
+        `)
+        res.send(q.rows[0]);
+    })
     .delete(async(req,res)=>{
-        console.log("DELETING", req.params);
         try{
             const q = await pool.query(`
                 DELETE from event WHERE uid = '${req.params.id}'

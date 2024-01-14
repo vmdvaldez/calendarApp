@@ -9,8 +9,7 @@ export default function EventSummary({eventId, removeEventById}){
             const url = import.meta.env.VITE_BACKEND_URL
             const port = import.meta.env.VITE_BACKEND_PORT
             const fullPath = `${protocol}${url}:${port}`
-            const query = new URLSearchParams({id: eventId});
-            const res = await fetch(`${fullPath}/events?` + query, 
+            const res = await fetch(`${fullPath}/events/${eventId}`, 
                 {
                     method: "GET",
                     headers: {
