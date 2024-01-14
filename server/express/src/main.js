@@ -82,7 +82,7 @@ app.route('/events')
 
     const date = req.query.date;
     const q = await pool.query(`
-        SELECT event.uid AS id, title, COALESCE(name, '')  AS activity, 
+        SELECT event.uid AS id, title, name  AS activity, 
         to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
         FROM event 
         LEFT JOIN activity ON activity_id = activity.uid 
