@@ -36,6 +36,9 @@
     padding: 2px;
     /* background-color: rgba(0, 0, 0, 0.415); */
     background-color: #4f5d7565;
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
 }
 
 .eventsummary>li:hover{
