@@ -12,12 +12,22 @@ app.use(express.json())
 // TODO: input validation to prevent SQL injections
 // TODO: push activity and category together via transcation -- will need to push activity and category relations as well
 
-
+app.use('/activity', (req,res, next)=>{
+    console.log(req.body)
+    for (const key in req.body){
+        if(typeof req.body[key] === 'string') req.body[key] = req.body[key].trim();
+        else if(Array.isArray(req.body[key])) req.body[key] = req.body[key].map(elem=>{ 
+            if(typeof elem === 'string') return elem.trim();
+        })
+    }
+    console.log(req.body)
+    next();
+});
 app.route('/activity')
     .get(async (req,res)=>{
         const q = await pool.query(`
             SELECT activity.uid, activity.name, 
-                to_char(activity.date_created, 'MonthDD,YYYY') AS date_created,
+                to_char(activity.date_created, 'Month DD, YYYY') AS date_created,
                 ARRAY_AGG(cat.name) AS categories
             FROM activity
             LEFT JOIN activity_category AS ac ON ac.activity_id = activity.uid
@@ -38,7 +48,7 @@ app.route('/activity')
         try{
             const aQueryRet = await pool.query(`
                 INSERT INTO activity (name) VALUES ('${activity}') 
-                RETURNING uid`);
+                RETURNING uid, to_char(date_created, 'Month DD, YYYY') AS date_created`);
             
             if (ctg.length){
                 const cQueryRet = await pool.query(`
@@ -62,7 +72,7 @@ app.route('/activity')
             res.status(201).send({
                 status: 201,
                 message: `Successfully Created Activity ${activity} with category: ${ctg.map(c=>` ${c}`)}`,
-                activityId: aQueryRet.rows[0].uid
+                activityInfo: {id: aQueryRet.rows[0].uid, date_created: aQueryRet.rows[0].date_created}
             });
         }
         catch(e){
@@ -77,13 +87,20 @@ app.route('/activity')
     })
 
 // QUERY SPECIFIC ACTIVITY app.route('/activty/:id')
-
-
 app.get('/categories',async (req,res)=>{
         const q = await pool.query('SELECT name FROM category');
         res.send(q.rows);
     })
 
+app.use('/events', (req,res,next)=>{
+    for (const key in req.body){
+        if(typeof req.body[key] === 'string') req.body[key] = req.body[key].trim();
+        else if(Array.isArray(req.body[key])) req.body[key] = req.body[key].map(elem=>{ 
+            if(typeof elem === 'string') return elem.trim();
+        })
+    }
+    next();
+});
 app.route('/events')
     .get(async(req,res)=>{
     // console.log("REQUESTING EVENTS");
@@ -149,7 +166,7 @@ app.route('/events/:id')
         try{
             const q = await pool.query(`
             SELECT e.uid AS id, e.title AS title, to_char(time_start, 'HH:MM AM') AS time_start,  to_char(time_end, 'HH:MM AM') AS time_end, 
-            act.name AS activity, ARRAY_AGG(cat.name) AS categories , to_char(date_created, 'MONTH DD, YYYY') AS date_created  
+            act.name AS activity, ARRAY_AGG(cat.name) AS categories , to_char(e.date_created, 'MONTH DD, YYYY') AS date_created  
             FROM event AS e 
             LEFT JOIN activity AS act ON act.uid = e.activity_id
             LEFT JOIN activity_category AS ac  ON act.uid = ac.activity_id
