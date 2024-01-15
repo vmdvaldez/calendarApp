@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import styles from '../styles/EventInput.module.css';
+import styles from '../../styles/Calendar/EventInput.module.css';
 
 import CreateActivity from "./CreateActivity";
 import CreateEvent from './CreateEvent';

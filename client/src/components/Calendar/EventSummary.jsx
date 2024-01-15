@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from '../styles/EventSummary.module.css';
+import styles from '../../styles/Calendar/EventSummary.module.css';
 export default function EventSummary({eventId, removeEventById, displayRight}){
     const [eventInfo, setEventInfo] = useState(null);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});

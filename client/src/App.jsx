@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import Calendar from './components/Calendar'
+import Calendar from './components/Calendar/Calendar'
 import NavBar from './components/NavBar';
 
 function App() {

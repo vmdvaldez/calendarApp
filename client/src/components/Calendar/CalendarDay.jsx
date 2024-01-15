@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment } from 'react';
-import styles from '../styles/CalendarDay.module.css';
+import styles from '../../styles/Calendar/CalendarDay.module.css';
 import EventInput from './EventInput';
 import EventSummary from './EventSummary';
 

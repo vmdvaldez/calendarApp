@@ -1,4 +1,4 @@
-import styles from "../styles/CreateActivity.module.css";
+import styles from "../../styles/Calendar/CreateActivity.module.css";
 import { useContext, useState } from "react";
 import { ActivityContext, CategoryContext } from './CalendarContext';
 

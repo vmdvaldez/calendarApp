@@ -1,6 +1,6 @@
-import styles from '../styles/Calendar.module.css';
+import styles from '../../styles/Calendar/Calendar.module.css';
 
-import date from '../helper/date';
+import date from '../../helper/date';
 
 import CalendarDay from './CalendarDay';
 import { ActivityContext, CategoryContext } from './CalendarContext';

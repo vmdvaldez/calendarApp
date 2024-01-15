@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import styles from '../styles/CreateEvent.module.css';
+import styles from '../../styles/Calendar/CreateEvent.module.css';
 import { ActivityContext } from './CalendarContext';
 
 export default function CreateEvent({ setCreateActivity, eventStates, 
