@@ -1,6 +1,6 @@
 .calendar{
     display: flex;
-    flex: 1;
+    flex: 8;
     background-color: var(--color2);
     padding: 1%;
     

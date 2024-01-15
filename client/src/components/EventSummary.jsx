@@ -17,7 +17,6 @@ export default function EventSummary({eventId, removeEventById, displayRight}){
                     }
                 }
             )
-
             return res.json();
         }
 

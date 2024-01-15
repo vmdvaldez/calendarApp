@@ -1,0 +1,5 @@
+.appcontainer{
+    flex: 1;
+    display: flex;
+    background-color: var(--color1);
+}
