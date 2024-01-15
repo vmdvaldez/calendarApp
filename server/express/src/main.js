@@ -15,9 +15,8 @@ app.use(express.json())
 
 app.route('/activity')
     .get(async (req,res)=>{
-        console.log("ACTI", req.params)
-    
-        const q = await pool.query('SELECT name FROM activity');
+        const q = await pool.query('SELECT uid, name FROM activity');
+        console.log(q.rows);
         res.send(q.rows);
         })
     .post(async(req,res)=>{
@@ -54,7 +53,8 @@ app.route('/activity')
             ret = await pool.query('COMMIT');
             res.status(201).send({
                 status: 201,
-                message: `Successfully Created Activity ${activity} with category: ${ctg.map(c=>` ${c}`)}`
+                message: `Successfully Created Activity ${activity} with category: ${ctg.map(c=>` ${c}`)}`,
+                activityId: aQueryRet.rows[0].uid
             });
         }
         catch(e){

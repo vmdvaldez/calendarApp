@@ -5,13 +5,14 @@ import date from '../../helper/date';
 import CalendarDay from './CalendarDay';
 import { ActivityContext, CategoryContext } from './CalendarContext';
 import { useEffect, useState} from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 
 export default function Calendar(){
     const [month, setMonth] = useState((new Date()).getMonth());
     const [year, setYear] = useState((new Date).getFullYear());
-    const [activityList, setActivityList] = useState([]);
-    const [categoryList, setCategoryList] = useState([]);
+    const {activityList, setActivityList} = useOutletContext();
+    const {categoryList, setCategoryList} = useOutletContext();
     const [jumpTo, setJumpTo] = useState(false);
     // TODO: get events sorted in date
 
@@ -49,48 +50,6 @@ export default function Calendar(){
         }
     }
 
-    useEffect(()=>{
-        async function getActivities(){
-            const protocol = "http://"
-            const url = import.meta.env.VITE_BACKEND_URL
-            const port = import.meta.env.VITE_BACKEND_PORT
-            const res = await fetch(`${protocol}${url}:${port}/activity`, {
-                method: "GET",
-                headers:{
-                    mode: "cors"
-                }
-            })
-            const json =  await res.json();
-    
-            return json
-        }
-    
-        getActivities().then(activities => {
-            setActivityList(activities.map(activity=>activity.name));
-        });
-
-    },[])
-
-    useEffect(()=>{
-        async function getCategories(){
-            const protocol = "http://"
-            const url = import.meta.env.VITE_BACKEND_URL
-            const port = import.meta.env.VITE_BACKEND_PORT
-            const res = await fetch(`${protocol}${url}:${port}/categories`, {
-                method: "GET",
-                headers:{
-                    mode: "cors"
-                }
-            })
-            const json =  await res.json();
-            return json
-        }
-
-        getCategories().then(categories => {
-            setCategoryList(categories.map(category=>category.name));
-        });
-    },[]);
-    
     return(
     <ActivityContext.Provider value={{activityList, setActivityList}}>
         <CategoryContext.Provider value={{categoryList, setCategoryList}}>

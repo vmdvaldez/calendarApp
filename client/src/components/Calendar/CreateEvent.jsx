@@ -5,9 +5,9 @@ import { ActivityContext } from './CalendarContext';
 export default function CreateEvent({ setCreateActivity, eventStates, 
     setEventStates, date, eventList, setEventList, clearEventStates}){
     const {activityList} = useContext(ActivityContext);
+    const activityNames = activityList.map(ac=>ac.name);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
     const day = (new Date(date)).getDate();
-    console.log(eventStates);
     const submitForm = async (e) =>{
         e.preventDefault();
         const protocol = "http://"
@@ -92,7 +92,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
                     onBlur={(e)=>{
                         const elem = e.target
                         const val = elem.value
-                        if(val != "" && !activityList.includes(val)){
+                        if(val != "" && !activityNames.includes(val)){
                             elem.setCustomValidity("Error: Please Create Entered Activity.");
                             elem.reportValidity();
                         }
@@ -104,7 +104,7 @@ export default function CreateEvent({ setCreateActivity, eventStates,
                 
                 <datalist id="activityList">
                     {activityList.map(activity=>{
-                        return(<option key={activity} value={activity}>{activity}</option>)
+                        return(<option key={activity.id} value={activity.name}>{activity.name}</option>)
                     })}
                 </datalist>
                 <button type="submit">Submit</button>

@@ -54,7 +54,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
         }else{
             console.log(json.message);
             setActivityState({activity: "", categories: [""]});
-            setActivityList([activityState.activity].concat(activityList)); // TODO: Automatically input in Event Activity?
+            setActivityList([{id: json.activityId, name: activityState.activity}].concat(activityList)); // TODO: Automatically input in Event Activity?
             setCreateActivity(false);
         }
     }
