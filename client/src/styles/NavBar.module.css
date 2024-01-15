@@ -7,10 +7,19 @@
     color: var(--color3);
 }
 
+
+
 .navbar>ul{
     margin-top: 3vh;
     list-style-type: none;
     text-align: center;
+}
+
+.navbar>ul>a,
+.navbar>ul>a:active,
+.navbar>ul>a:link{
+    color: inherit;
+    text-decoration: none;
 }
 
 .navItems{
