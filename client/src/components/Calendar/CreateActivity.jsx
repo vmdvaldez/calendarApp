@@ -52,9 +52,14 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
         if(json.status >= 400){
             console.log(json.message);
         }else{
+            const activityInfo = json.activityInfo;
             console.log(json.message);
             setActivityState({activity: "", categories: [""]});
-            setActivityList([{id: json.activityId, name: activityState.activity}].concat(activityList)); // TODO: Automatically input in Event Activity?
+            setActivityList([{
+                id: activityInfo.id, 
+                name: activityState.activity.trim(),
+                date_created: activityInfo.date_created
+            }].concat(activityList)); // TODO: Automatically input in Event Activity?
             setCreateActivity(false);
         }
     }
