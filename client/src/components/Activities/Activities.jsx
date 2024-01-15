@@ -7,17 +7,42 @@ export default function Activities(){
     const [activityToDisplay, setActivityToDisplay] = useState([...activityList])
 
     // NAME CATEGORIES DATE_CREATED EDIT DELETE
+
+    // TODO: Add edit on click and add category description
     return(
         <section className={styles.activities}>
-            <div>
-                <input 
-                    type="text"
-                    onChange={(e)=>{
-                        setActivityToDisplay(
-                            activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase())
-                            ))
-                    }}></input>
-                {activityToDisplay.map(activity=><div>{activity.name}</div>)}
+            <div className={styles.activitiescontainer}>
+                <div className={styles.searchBar}>
+                    <input 
+                        type="text"
+                        onChange={(e)=>{
+                            if(e.target.value){
+                                setActivityToDisplay(
+                                    activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase())
+                                    ))
+                            }
+                            else{
+                                setActivityToDisplay([...activityList]);
+                            }
+
+                        }}></input>
+                </div>
+                <ul className={styles.activityList}>
+                    <li><div className={styles.name}>Name</div><div>Date Created</div></li>
+                    {activityToDisplay.map(activity=>
+                    <li key={activity.id} className={styles.activity}>
+                        <div className={styles.name}>{activity.name}</div>
+                        <div>{activity.date_created}</div>
+                        {/* {activity.categories.map(c=><div>{c}</div>)} */}
+                        {/* <div>{activity.categories}</div> */}
+                        {/* <div className={styles.buttons}>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </div> */}
+
+                    </li>
+                    )}
+                </ul>
             </div>
         </section>
     )

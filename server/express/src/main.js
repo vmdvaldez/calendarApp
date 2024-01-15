@@ -15,7 +15,15 @@ app.use(express.json())
 
 app.route('/activity')
     .get(async (req,res)=>{
-        const q = await pool.query('SELECT uid, name FROM activity');
+        const q = await pool.query(`
+            SELECT activity.uid, activity.name, 
+                to_char(activity.date_created, 'MonthDD,YYYY') AS date_created,
+                ARRAY_AGG(cat.name) AS categories
+            FROM activity
+            LEFT JOIN activity_category AS ac ON ac.activity_id = activity.uid
+            LEFT JOIN category AS cat ON ac.category_id = cat.uid
+            GROUP BY activity.uid
+        `);
         console.log(q.rows);
         res.send(q.rows);
         })

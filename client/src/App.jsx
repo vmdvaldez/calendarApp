@@ -23,11 +23,13 @@ function App() {
 
         return json
     }
-
     getActivities().then(activities => {
+      console.log(activities);
       setActivityList(activities.map(activity=>({
         id: activity.uid,
-        name: activity.name    
+        name: activity.name,
+        date_created: activity.date_created,
+        categories: activity.categories
       })));
     });
 
@@ -52,8 +54,6 @@ function App() {
           setCategoryList(categories.map(category=>category.name));
       });
   },[]);
-
-  console.log(activityList);
 
   return (
     <div className={styles.appcontainer}>
