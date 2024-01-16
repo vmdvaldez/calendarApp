@@ -31,7 +31,7 @@ export default function Activities(){
                         }}></input>
                 </div>
                 <ul className={styles.activityList}>
-                    {createNewEvent && activityToDisplay.length > 1 &&
+                    {createNewEvent && !activityList.find(a => a.name === createNewEvent) &&
                         <li>
                             <div className={styles.name}>{createNewEvent}</div>
                             <button>Create</button>
