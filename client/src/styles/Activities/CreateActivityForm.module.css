@@ -1,0 +1,31 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    background-color: var(--color1);
+    color: var(--color3);
+
+    padding: 1.5%;
+    min-width: 20%;
+    height: max-content;
+
+}
+
+.title{
+    text-align: center;
+    font-size: 5rem;
+    flex: 1;
+}
+
+.categoryNum{
+    font-size: 1rem;
+}
+
+.form>button{
+    margin: 10px 0px;
+}
+
+.navButtons{
+    align-self: flex-end;
+}

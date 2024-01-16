@@ -50,6 +50,16 @@
     margin-left: 10px;
 }
 
+.createDiv{
+    width: 100%;
+    display: flex;
+}
+
+.createList{
+    display: flex;
+    flex-direction: column;
+}
+
 /* 
 *{
     outline: red solid 1px;

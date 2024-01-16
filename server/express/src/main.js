@@ -33,6 +33,7 @@ app.route('/activity')
             LEFT JOIN activity_category AS ac ON ac.activity_id = activity.uid
             LEFT JOIN category AS cat ON ac.category_id = cat.uid
             GROUP BY activity.uid
+            ORDER BY activity.date_created DESC
         `);
         console.log(q.rows);
         res.send(q.rows);
