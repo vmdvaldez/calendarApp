@@ -43,7 +43,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(activityState)
+                body: JSON.stringify({...activityState, categories: activityState.categories.map(c=>c.trim().toUpperCase())})
             }
         )
         const json = await res.json();
@@ -57,7 +57,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
             setActivityState({activity: "", categories: [""]});
             setActivityList([{
                 id: activityInfo.id, 
-                name: activityState.activity.trim(),
+                name: activityState.activity.trim().toUpperCase(),
                 date_created: activityInfo.date_created
             }].concat(activityList)); // TODO: Automatically input in Event Activity?
             setCreateActivity(false);

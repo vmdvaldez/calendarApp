@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import styles from '../../styles/Activities/CreateActivityForm.module.css';
 
-export default function CreateActivityForm({cancelForm, activityName, categoryList, activityList, setActivityList}){
+export default function CreateActivityForm({cancelForm, activityName, categoryList, 
+    activityList, setActivityList, setActivityToDisplay}){
     const [categoryInputs, setCategoryInputs] = useState([""]);
 
     function createCategoryInput(){
@@ -43,8 +44,8 @@ export default function CreateActivityForm({cancelForm, activityName, categoryLi
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    activity: activityName.trim(), 
-                    categories: categoryInputs})
+                    activity: activityName.trim().toUpperCase(), 
+                    categories: categoryInputs.map(c=>c.trim().toUpperCase())})
             }
         )
         const json = await res.json();
@@ -52,12 +53,16 @@ export default function CreateActivityForm({cancelForm, activityName, categoryLi
             console.log(json.message);
         }else{
             const activityInfo = json.activityInfo;
-            console.log(json.message);
-            setActivityList([{
+            console.log(activityList);
+            const newActivityList = [{
                 id: activityInfo.id, 
-                name: activityName.trim(),
-                date_created: activityInfo.date_created
-            }].concat(activityList));
+                name: activityName.trim().toUpperCase(),
+                date_created: activityInfo.date_created,
+                categories: categoryInputs.map(c=>c.trim().toUpperCase())
+            }].concat(activityList);
+
+            setActivityList(newActivityList);
+            setActivityToDisplay(newActivityList)
             cancelForm();
         }
     }

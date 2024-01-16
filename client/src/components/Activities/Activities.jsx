@@ -17,12 +17,10 @@ export default function Activities(){
     }
 
     const setCreateNewEventFalse = ()=>{
-        setActivityToDisplay([...activityList]);
         setCreateNewEvent({name: "", clicked: false});
     }
-
+    
     console.log(activityList);
-
     // ON HOVER OR CLICK show EDIT and DELETE
     // TODO: Add edit on click and add category description
     return(
@@ -35,7 +33,7 @@ export default function Activities(){
                                 type="text"
                                 value={createNewEvent.name}
                                 onChange={(e)=>{
-                                    if(e.target.value){
+                                    if(e.target.value.trim()){
                                         const newActivityDisplay = activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase()))
                                         setActivityToDisplay(newActivityDisplay)
                                     }
@@ -47,7 +45,7 @@ export default function Activities(){
                         </div>
                     }
                     <ul className={styles.activityList}>
-                        {createNewEvent.name && !activityList.find(a => a.name === createNewEvent.name) &&
+                        {createNewEvent.name.toUpperCase() && !activityList.find(a => a.name === createNewEvent.name) &&
                             <li className={styles.createList}>
                                     <div className={styles.createDiv}>
                                         <div className={styles.name}>{createNewEvent.name}</div>
@@ -73,6 +71,7 @@ export default function Activities(){
 
             {createNewEvent.clicked && 
                 <CreateActivityForm 
+                setActivityToDisplay={setActivityToDisplay}
                 activityList={activityList}
                 setActivityList={setActivityList}
                 cancelForm={setCreateNewEventFalse}
