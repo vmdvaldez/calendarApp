@@ -21,10 +21,13 @@
     font-size: 3rem;
 }
 
-.activityList>li{
+.colName{
     display: flex;
 }
 
+.activityList>li .activitySummary{
+    display: flex;
+}
 
 .activityList .buttons{
     display: flex;
@@ -58,6 +61,14 @@
 .createList{
     display: flex;
     flex-direction: column;
+}
+.categoryList{
+    font-size: 2rem;
+}
+
+.categoryListItems{
+    display: flex;
+    gap: 10px;
 }
 
 /* 

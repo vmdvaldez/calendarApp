@@ -20,7 +20,6 @@ app.use('/activity', (req,res, next)=>{
             if(typeof elem === 'string') return elem.trim();
         })
     }
-    console.log(req.body)
     next();
 });
 app.route('/activity')
@@ -85,6 +84,21 @@ app.route('/activity')
     
         console.log(ret);
     
+    })
+
+app.route('/activity/:id')
+    .put(async(req,res)=>{
+        const id = req.params.id
+        const categories = req.body.categories.length > 0 ? req.body.categories : ['']
+
+        const q = await pool.query(`
+            DELETE FROM activity_category
+                USING category AS cat 
+                WHERE category_id = cat.uid AND activity_id = '${id}' AND cat.name NOT IN (${categories.map(c=>`'${c}'`)})
+        `)
+
+        console.log(q);
+        res.send(200);
     })
 
 // QUERY SPECIFIC ACTIVITY app.route('/activty/:id')
