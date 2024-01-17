@@ -63,14 +63,14 @@ export default function Activities(){
                                 <li key={activity.id} 
                                     className={styles.activity}
                                     onClick={()=>{
-                                        if (activity.id == activityClicked) setActivityClicked("")
-                                        else setActivityClicked(activity.id)
+                                        if (activity.id == activityClicked.id) setActivityClicked({...activity, id: 0})
+                                        else setActivityClicked(activity)
                                         }}>
                                     <div className={styles.activitySummary}>
                                         <div className={styles.name}>{activity.name}</div>
                                         <div>{activity.date_created}</div>
                                     </div>
-                                    {activityClicked === activity.id &&
+                                    {activityClicked.id === activity.id &&
                                         <>
                                             <div className={styles.categoryList}>
                                                {activity.categories.map(c=>
@@ -84,28 +84,101 @@ export default function Activities(){
                                                             const url = import.meta.env.VITE_BACKEND_URL
                                                             const port = import.meta.env.VITE_BACKEND_PORT
                                                             const fullPath = `${protocol}${url}:${port}`
-                                                            const res = await fetch(`${fullPath}/activity/${activity.id}`, 
+                                                            const res = await fetch(`${fullPath}/activity/${activity.id}/categories/${c}`, 
                                                                 {
-                                                                    method: "PUT",
+                                                                    method: "DELETE",
                                                                     headers: {
                                                                         mode: "cors",
                                                                         Accept: 'application/json',
                                                                         'Content-Type': 'application/json'
-                                                                    },
-                                                                    body: JSON.stringify({...activity, categories: activity.categories.filter(cat=> cat !== c)})
+                                                                    }
                                                                 }
                                                             )
 
-                                                            const index = activityList.findIndex(a => a.id === activity.id);
-                                                            console.log(index);
-                                                            let newActivityList = [...activityList]
-                                                            newActivityList[index].categories = newActivityList[index].categories.filter(cat=>cat !== c);
-                                                            setActivityList(newActivityList)
+                                                            const json = await res.json();
+
+                                                            if (json.status >= 300){
+                                                                console.log(json.message);
+                                                            }else{
+                                                                const index = activityList.findIndex(a => a.id === activity.id);
+                                                                console.log(index);
+                                                                let newActivityList = [...activityList]
+                                                                newActivityList[index].categories = newActivityList[index].categories.filter(cat=>cat !== c);
+                                                                setActivityList(newActivityList)
+                                                            }
+
+
                                                         }}>REMOVE</button>
                                                     </div>
                                                 </>
                                                 )}
-                                                <button>ADD</button> 
+                                                <form onSubmit={async (e)=>{
+                                                        e.preventDefault();
+                                                        const input = e.target.newcategory
+                                                        const val = input.value.trim().toUpperCase();
+                                                        if(val != "" && !categoryList.includes(val)){
+                                                            input.setCustomValidity("Error: Please Enter Valid Category.");
+                                                            input.reportValidity();
+                                                            return
+                                                        }else{
+                                                            input.setCustomValidity("");
+                                                        }
+                                                        
+
+                                                        const protocol = "http://"
+                                                        const url = import.meta.env.VITE_BACKEND_URL
+                                                        const port = import.meta.env.VITE_BACKEND_PORT
+                                                        const fullPath = `${protocol}${url}:${port}`
+                                                        const res = await fetch(`${fullPath}/activity/${activityClicked.id}/categories/${val}`, 
+                                                            {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    mode: "cors",
+                                                                    Accept: 'application/json',
+                                                                    'Content-Type': 'application/json'
+                                                                }
+                                                            }
+                                                        )
+                                                        const json = await res.json();
+                                                        
+                                                        if (json.status >= 300){
+                                                            console.log(json.message);
+                                                        }
+                                                        else{
+                                                            const index = activityList.findIndex(a=> a.id === activityClicked.id)
+                                                            let newActivityList = [...activityList]
+                                                            newActivityList[index].categories.push(val)
+                                                            setActivityList(newActivityList)
+                                                        }
+
+                                                        e.target.reset();
+
+                                                    }}>
+                                                    <input 
+                                                        type="text"
+                                                        list="categoryList"
+                                                        autoComplete="off"
+                                                        name="newcategory"
+                                                        onInput={(e)=>e.target.setCustomValidity("")}
+                                                        onBlur={(e)=>{
+                                                            const elem = e.target
+                                                            const val = elem.value
+                                                            if(val != "" && !categoryList.includes(val)){
+                                                                elem.setCustomValidity("Error: Please Enter Valid Category.");
+                                                                elem.reportValidity();
+                                                            }
+                                                        }}
+                                                        onClick={(e)=>e.stopPropagation()}/>
+
+                                                    <datalist id="categoryList">
+                                                        {categoryList.map(category=>{
+                                                            return(<option key={category} value={category}>{category}</option>)
+                                                        })}
+                                                    </datalist>    
+                                                    <button type="submit" 
+                                                        onClick={(e)=>e.stopPropagation()}
+                                                        >ADD</button> 
+                                                </form>
                                             </div>
                                             
                                         </>

@@ -95,6 +95,10 @@ export default function CreateEvent({ setCreateActivity, eventStates,
                         if(val != "" && !activityNames.includes(val)){
                             elem.setCustomValidity("Error: Please Create Entered Activity.");
                             elem.reportValidity();
+                            return
+                        }
+                        else{
+                            elem.setCustomValidity("");
                         }
                     }}
                     value={eventStates.activity}

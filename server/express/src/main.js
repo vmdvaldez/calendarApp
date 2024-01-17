@@ -13,7 +13,6 @@ app.use(express.json())
 // TODO: push activity and category together via transcation -- will need to push activity and category relations as well
 
 app.use('/activity', (req,res, next)=>{
-    console.log(req.body)
     for (const key in req.body){
         if(typeof req.body[key] === 'string') req.body[key] = req.body[key].trim();
         else if(Array.isArray(req.body[key])) req.body[key] = req.body[key].map(elem=>{ 
@@ -41,7 +40,8 @@ app.route('/activity')
         console.log("POST TO setactivity");
         const {activity, categories} = req.body;
     
-        const ctg = categories.filter(c => c.length > 0)
+        let ctg = categories.filter(c => c.length > 0)
+        ctg = [... new Set(ctg)];
         let ret = "";
     
         await pool.query('BEGIN')
@@ -86,20 +86,45 @@ app.route('/activity')
     
     })
 
-app.route('/activity/:id')
-    .put(async(req,res)=>{
+// Remove Category
+app.route('/activity/:id/categories/:category')
+    .delete(async(req,res)=>{
         const id = req.params.id
-        const categories = req.body.categories.length > 0 ? req.body.categories : ['']
+        const category = req.params.category
+        try{
+            const q = await pool.query(`
+                DELETE FROM activity_category
+                    USING category AS cat 
+                    WHERE category_id = cat.uid AND activity_id = '${id}' AND cat.name = '${category}'
+            `)
 
-        const q = await pool.query(`
-            DELETE FROM activity_category
-                USING category AS cat 
-                WHERE category_id = cat.uid AND activity_id = '${id}' AND cat.name NOT IN (${categories.map(c=>`'${c}'`)})
-        `)
-
-        console.log(q);
-        res.send(200);
+            res.status(200).send({status: 200, message: `Succesfully dissociated category (${category}) from activity`});
+        }catch(e){
+            console.log(e)
+            res.status(409).send({status:409, message: "Error: Category Cannot be disossicated"});
+        }
     })
+    .post(async(req,res)=>{
+        const id = req.params.id;
+        const category = req.params.category;
+
+
+        try{
+            const q = await pool.query(`
+                INSERT INTO activity_category (activity_id, category_id)
+                SELECT '${id}', uid 
+                FROM category
+                WHERE category.name = '${category}' 
+            `)
+
+            res.status(200).send({status:200, message: `Successfully added category (${category}) to activity`});
+        }catch(e){
+            console.log(e);
+            res.status(409).send({status:409, message: "Error: category cannot be created for activity"});
+        }
+    })
+
+
 
 // QUERY SPECIFIC ACTIVITY app.route('/activty/:id')
 app.get('/categories',async (req,res)=>{

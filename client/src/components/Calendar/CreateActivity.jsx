@@ -61,7 +61,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
                 id: activityInfo.id, 
                 name: activityState.activity.trim().toUpperCase(),
                 date_created: activityInfo.date_created,
-                categories: activityState.categories.map(c=>c.trim().toUpperCase())
+                categories: [... new Set(activityState.categories)].map(c=>c.trim().toUpperCase())
             }].concat(activityList)); // TODO: Automatically input in Event Activity?
             setCreateActivity(false);
         }
