@@ -27,7 +27,7 @@ app.route('/activity')
         const q = await pool.query(`
             SELECT activity.uid, activity.name, 
                 to_char(activity.date_created, 'Month DD, YYYY') AS date_created,
-                ARRAY_AGG(cat.name) AS categories
+                ARRAY_REMOVE(ARRAY_AGG(cat.name), NULL) AS categories
             FROM activity
             LEFT JOIN activity_category AS ac ON ac.activity_id = activity.uid
             LEFT JOIN category AS cat ON ac.category_id = cat.uid
