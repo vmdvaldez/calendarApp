@@ -86,7 +86,45 @@ app.route('/activity')
     
     })
 
-// Remove Category
+app.route('/activity/:id')
+    .delete(async (req,res)=>{
+        const id = req.params.id;
+        console.log(req.params.id);
+
+        try{
+            
+            await pool.query(`BEGIN`)
+
+            // DELETE activity and category association
+            await pool.query(`
+                DELETE FROM activity_category
+                WHERE activity_id = '${id}'
+            `)
+
+            // Remove reference to activity in events
+            await pool.query(`
+                UPDATE event
+                SET activity_id = NULL
+                WHERE activity_id = '${id}'
+            `)
+
+            // DELETE activity 
+            await pool.query(`
+                DELETE FROM activity
+                WHERE uid = '${id}'
+            `)
+
+            const q = await pool.query(`COMMIT`);
+
+            res.status(200).send({status:200, message: `Successfully Deleted Activity`})
+
+        }catch(e){
+            console.log(e)
+            res.status(409).send({status:409, message: `Error: deleting activity id ${id}`})
+        }
+    })
+
+// Remove and Add Category
 app.route('/activity/:id/categories/:category')
     .delete(async(req,res)=>{
         const id = req.params.id

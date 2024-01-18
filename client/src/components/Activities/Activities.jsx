@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState} from "react";
 import styles from "../../styles/Activities/Activities.module.css";
 import { useOutletContext } from "react-router-dom";
 
@@ -9,31 +9,26 @@ export default function Activities(){
             activityList, setActivityList,
             categoryList, setCategoryList } = useOutletContext();
     const [activityToDisplay, setActivityToDisplay] = useState([...activityList])
-    const [createNewEvent, setCreateNewEvent] = useState({name: "", clicked: false});
+    const [createNewActivity, setCreateNewActivity] = useState({name: "", clicked: false});
     const [activityClicked, setActivityClicked] = useState("");
 
     const onCreateClick = ()=>{
-        setCreateNewEvent({...createNewEvent, clicked: true});
+        setCreateNewActivity({...createNewActivity, clicked: true});
     }
 
-    const setCreateNewEventFalse = ()=>{
-        setCreateNewEvent({name: "", clicked: false});
+    const setCreateNewActivityFalse = ()=>{
+        setCreateNewActivity({name: "", clicked: false});
     }
 
-    console.log(activityList);
-
-    // ON HOVER OR CLICK show EDIT and DELETE
-    // TODO: Add edit on click and add category description
     return(
         <section className={styles.activities}>
-            {!createNewEvent.clicked &&
+            {!createNewActivity.clicked &&
                 <div className={styles.activitiescontainer}>
-
-                    {!createNewEvent.clicked &&
+                    {!createNewActivity.clicked &&
                         <div className={styles.searchBar}>
                             <input 
                                 type="text"
-                                value={createNewEvent.name}
+                                value={createNewActivity.name}
                                 onChange={(e)=>{
                                     if(e.target.value.trim()){
                                         const newActivityDisplay = activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase()))
@@ -42,21 +37,21 @@ export default function Activities(){
                                     else{
                                         setActivityToDisplay([...activityList]);
                                     }
-                                    setCreateNewEvent({...createNewEvent, name: e.target.value.trim()});
+                                    setCreateNewActivity({...createNewActivity, name: e.target.value.trim()});
                                 }}></input>
                         </div>
                     }
 
                     <ul className={styles.activityList}>
-                        {createNewEvent.name.toUpperCase() && !activityList.find(a => a.name === createNewEvent.name) &&
+                        {createNewActivity.name.toUpperCase() && !activityList.find(a => a.name === createNewActivity.name) &&
                             <li className={styles.createList}>
                                     <div className={styles.createDiv}>
-                                        <div className={styles.name}>{createNewEvent.name}</div>
+                                        <div className={styles.name}>{createNewActivity.name}</div>
                                         <button type="button" onClick={onCreateClick}>Create</button>
                                     </div>
                             </li>
                         }
-                        {!createNewEvent.clicked && 
+                        {!createNewActivity.clicked && 
                         <>
                             <li className={styles.colName}><div className={styles.name}>Name</div><div>Date Created</div></li>
                             {activityToDisplay.map(activity=>
@@ -64,8 +59,7 @@ export default function Activities(){
                                     className={styles.activity}
                                     onClick={()=>{
                                         if (activity.id == activityClicked.id) setActivityClicked({...activity, id: 0})
-                                        else setActivityClicked(activity)
-                                        }}>
+                                        else setActivityClicked(activity)}}>
                                     <div className={styles.activitySummary}>
                                         <div className={styles.name}>{activity.name}</div>
                                         <div>{activity.date_created}</div>
@@ -74,8 +68,7 @@ export default function Activities(){
                                         <>
                                             <div className={styles.categoryList}>
                                                {activity.categories.map(c=>
-                                                <>  
-                                                    <div className={styles.categoryListItems}>
+                                                    <div className={styles.categoryListItems} key={c}>
                                                         <div>{c}</div> 
                                                         <button onClick={async (e)=>{
                                                             e.stopPropagation();
@@ -110,13 +103,12 @@ export default function Activities(){
 
                                                         }}>REMOVE</button>
                                                     </div>
-                                                </>
                                                 )}
                                                 <form onSubmit={async (e)=>{
                                                         e.preventDefault();
                                                         const input = e.target.newcategory
                                                         const val = input.value.trim().toUpperCase();
-                                                        if(val != "" && !categoryList.includes(val)){
+                                                        if(!categoryList.includes(val)){
                                                             input.setCustomValidity("Error: Please Enter Valid Category.");
                                                             input.reportValidity();
                                                             return
@@ -177,8 +169,46 @@ export default function Activities(){
                                                     </datalist>    
                                                     <button type="submit" 
                                                         onClick={(e)=>e.stopPropagation()}
-                                                        >ADD</button> 
+                                                        >ADD Category</button> 
                                                 </form>
+                                                <button 
+                                                    type="button"
+                                                    onClick={async (e)=>{
+                                                        e.stopPropagation();
+                                                        const protocol = "http://"
+                                                        const url = import.meta.env.VITE_BACKEND_URL
+                                                        const port = import.meta.env.VITE_BACKEND_PORT
+                                                        const fullPath = `${protocol}${url}:${port}`
+                                                        const res = await fetch(`${fullPath}/activity/${activity.id}`, 
+                                                            {
+                                                                method: "DELETE",
+                                                                headers: {
+                                                                    mode: "cors",
+                                                                    Accept: 'application/json',
+                                                                    'Content-Type': 'application/json'
+                                                                }
+                                                            }
+                                                        )
+
+                                                        const json = await res.json();
+
+                                                        console.log(json);
+
+                                                        if (json.status >= 300){
+                                                            console.log(json.message);
+                                                        }else{
+                                                            let newActivityList = [...activityList]
+                                                            const index = newActivityList.findIndex(a => a.id === activity.id);
+                                                            newActivityList.splice(index, 1);
+
+                                                            let newActivityDisplay = [...activityToDisplay]
+                                                            const idx2 = newActivityDisplay.findIndex(a=>a.id === activity.id);
+                                                            newActivityDisplay.splice(idx2, 1);
+
+                                                            setActivityList(newActivityList);
+                                                            setActivityToDisplay(newActivityDisplay);
+                                                        }
+                                                    }}>Delete Activity</button>
                                             </div>
                                             
                                         </>
@@ -193,13 +223,13 @@ export default function Activities(){
                 </div>
             }
 
-            {createNewEvent.clicked && 
+            {createNewActivity.clicked && 
                 <CreateActivityForm 
                     setActivityToDisplay={setActivityToDisplay}
                     activityList={activityList}
                     setActivityList={setActivityList}
-                    cancelForm={setCreateNewEventFalse}
-                    activityName={createNewEvent.name}
+                    cancelForm={setCreateNewActivityFalse}
+                    activityName={createNewActivity.name}
                     categoryList={categoryList}
                 />
                 }
