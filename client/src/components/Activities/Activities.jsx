@@ -10,7 +10,7 @@ export default function Activities(){
             categoryList, setCategoryList } = useOutletContext();
     const [activityToDisplay, setActivityToDisplay] = useState([...activityList])
     const [createNewActivity, setCreateNewActivity] = useState({name: "", clicked: false});
-    const [activityClicked, setActivityClicked] = useState("");
+    const [activityClicked, setActivityClicked] = useState({id:0});
 
     const onCreateClick = ()=>{
         setCreateNewActivity({...createNewActivity, clicked: true});
@@ -24,26 +24,24 @@ export default function Activities(){
         <section className={styles.activities}>
             {!createNewActivity.clicked &&
                 <div className={styles.activitiescontainer}>
-                    {!createNewActivity.clicked &&
-                        <div className={styles.searchBar}>
-                            <input 
-                                type="text"
-                                value={createNewActivity.name}
-                                onChange={(e)=>{
-                                    if(e.target.value.trim()){
-                                        const newActivityDisplay = activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase()))
-                                        setActivityToDisplay(newActivityDisplay)
-                                    }
-                                    else{
-                                        setActivityToDisplay([...activityList]);
-                                    }
-                                    setCreateNewActivity({...createNewActivity, name: e.target.value.trim()});
-                                }}></input>
-                        </div>
-                    }
+                    <div className={styles.searchBar}>
+                        <input 
+                            type="text"
+                            value={createNewActivity.name}
+                            onChange={(e)=>{
+                                if(e.target.value.trim()){
+                                    const newActivityDisplay = activityList.filter(activity=> activity.name.toLowerCase().includes(e.target.value.toLowerCase()))
+                                    setActivityToDisplay(newActivityDisplay)
+                                }
+                                else{
+                                    setActivityToDisplay([...activityList]);
+                                }
+                                setCreateNewActivity({...createNewActivity, name: e.target.value.trim()});
+                            }}></input>
+                    </div>
 
                     <ul className={styles.activityList}>
-                        {createNewActivity.name.toUpperCase() && !activityList.find(a => a.name === createNewActivity.name) &&
+                        {createNewActivity.name && !activityList.find(a => a.name.toLowerCase() === createNewActivity.name.toLowerCase()) &&
                             <li className={styles.createList}>
                                     <div className={styles.createDiv}>
                                         <div className={styles.name}>{createNewActivity.name}</div>
@@ -108,7 +106,7 @@ export default function Activities(){
                                                         e.preventDefault();
                                                         const input = e.target.newcategory
                                                         const val = input.value.trim().toUpperCase();
-                                                        if(!categoryList.includes(val)){
+                                                        if(!categoryList.map(c=>c.name).includes(val)){
                                                             input.setCustomValidity("Error: Please Enter Valid Category.");
                                                             input.reportValidity();
                                                             return
@@ -154,8 +152,8 @@ export default function Activities(){
                                                         onInput={(e)=>e.target.setCustomValidity("")}
                                                         onBlur={(e)=>{
                                                             const elem = e.target
-                                                            const val = elem.value
-                                                            if(val != "" && !categoryList.includes(val)){
+                                                            const val = elem.value.trim().toUpperCase()
+                                                            if(val != "" && !categoryList.map(c=>c.name).includes(val)){
                                                                 elem.setCustomValidity("Error: Please Enter Valid Category.");
                                                                 elem.reportValidity();
                                                             }
@@ -164,7 +162,7 @@ export default function Activities(){
 
                                                     <datalist id="categoryList">
                                                         {categoryList.map(category=>{
-                                                            return(<option key={category} value={category}>{category}</option>)
+                                                            return(<option key={category.id} value={category.name}>{category.name}</option>)
                                                         })}
                                                     </datalist>    
                                                     <button type="submit" 

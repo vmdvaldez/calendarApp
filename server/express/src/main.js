@@ -165,9 +165,63 @@ app.route('/activity/:id/categories/:category')
 
 
 // QUERY SPECIFIC ACTIVITY app.route('/activty/:id')
-app.get('/categories',async (req,res)=>{
-        const q = await pool.query('SELECT name FROM category');
-        res.send(q.rows);
+app.route('/categories')
+    .get(async(req,res)=>{
+        try{
+            const q = await pool.query(`
+                SELECT uid AS id, name, to_char(date_created, 'Month DD, YYYY') AS date_created 
+                FROM category
+                ORDER BY date_created DESC
+                `);
+            console.log(q.rows);
+            res.send(q.rows);
+        }catch(e){
+            console.log(e)
+            res.send(409)
+        }
+
+        })
+    .post(async (req,res)=>{
+        console.log(req.body)
+        const category = req.body.category
+        try{
+            const q = await pool.query(`
+                INSERT INTO category (name)
+                VALUES ('${category}')
+                RETURNING uid AS id, name, to_char(date_created, 'Month DD, YYYY') AS date_created
+            `)
+            
+            res.status(200).send(q.rows[0])
+        }catch(e){
+            console.log(e)
+            res.status(409).send({})
+        }
+    })
+
+app.route('/categories/:id')
+    .delete(async(req,res)=>{
+        const id  = req.params.id
+        console.log(id);
+        try{
+            await pool.query(`BEGIN`)
+
+            await pool.query(`
+                DELETE from activity_category
+                WHERE category_id = '${id}'
+            `)
+
+            await pool.query(`
+                DELETE from category
+                WHERE uid = '${id}'
+            `)
+
+            const q = await pool.query(`COMMIT`)
+            
+            res.status(200).send({status:200, message:`Successfully deleted category`})
+        }catch(e){
+            console.log(e)
+            res.status(409).send({status:409, message:"Error: Unable to delete category"})
+        }
     })
 
 app.use('/events', (req,res,next)=>{

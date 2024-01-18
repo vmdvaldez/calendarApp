@@ -73,7 +73,7 @@ export default function CreateActivityForm({cancelForm, activityName, categoryLi
             {createCategoryInput()}
             <datalist id="categoryList">
                     {categoryList.map(category=>{
-                        return(<option key={category} value={category}>{category}</option>)
+                        return(<option key={category.id} value={category.name}>{category.name}</option>)
                     })}
             </datalist>
             <button type="button" onClick={()=>{

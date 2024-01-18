@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../../styles/Calendar/EventSummary.module.css';
+
+//TODO: Add edit activity -- switching to a different activity
 export default function EventSummary({eventId, removeEventById, displayRight}){
     const [eventInfo, setEventInfo] = useState(null);
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});

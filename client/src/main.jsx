@@ -7,6 +7,7 @@ import {createBrowserRouter, RouterProvider, Navigate} from "react-router-dom"
 
 import Calendar from './components/Calendar/Calendar.jsx'
 import Activities from './components/Activities/Activities.jsx'
+import Categories from './components/Categories/Categories.jsx'
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "categories",
-        element: <div>TODO</div>
+        element: <Categories/>
       }
     ]
   }

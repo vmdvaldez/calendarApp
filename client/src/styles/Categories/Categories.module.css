@@ -1,0 +1,56 @@
+.categories{
+    flex: 8;
+
+    background-color: var(--color2);
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+}
+
+.categoriesContainer{
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1%;
+}
+
+.searchBar>input{
+    width: 50vw;
+    height: 3rem;
+
+    font-size: 2.5rem;
+}
+
+.createDiv{
+    width: 100%;
+    display: flex;
+}
+
+.createList{
+    display: flex;
+    flex-direction: column;
+}
+
+.name{
+    margin-right: auto;
+}
+
+.categoryList{
+    flex: 1;
+    list-style-type: none;
+
+    font-size: 3rem;
+}
+
+.categoryList>li .categorySummary{
+    display: flex;
+}
+
+.category:hover{
+    background-color: white;
+    cursor: pointer;
+}
+
+.colName{
+    display: flex;
+}

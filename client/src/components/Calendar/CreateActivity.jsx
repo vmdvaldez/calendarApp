@@ -81,7 +81,7 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
             <label>Categories</label> {createCategoryInputs()}
             <datalist id="categoryList">
                     {categoryList.map(category=>{
-                        return(<option key={category} value={category}>{category}</option>)
+                        return(<option key={category.id} value={category.name}>{category.name}</option>)
                     })}
             </datalist>
 

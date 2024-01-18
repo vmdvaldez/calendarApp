@@ -33,7 +33,7 @@ function App() {
       })));
     });
 
-},[])
+},[categoryList])
 
   useEffect(()=>{
       async function getCategories(){
@@ -51,9 +51,15 @@ function App() {
       }
 
       getCategories().then(categories => {
-          setCategoryList(categories.map(category=>category.name));
+          setCategoryList(categories.map(category=>({
+            id: category.id,
+            name: category.name,
+            date_created: category.date_created
+          })));
       });
   },[]);
+
+  console.log(categoryList);
 
   return (
     <div className={styles.appcontainer}>
