@@ -3,18 +3,23 @@ import styles from '../../styles/Calendar/CalendarDay.module.css';
 import EventInput from './EventInput';
 import EventSummary from './EventSummary';
 
+import dateHelper  from '../../helper/date';
+
 export default function CalendarDay({day, month, year}){
     const [clicked, setClicked] = useState({clicked: false, displayRight: true});
     const [eventClicked, setEventClicked] = useState({id: null, clicked: false});
     const [events, setEvents] = useState([])
-    const date = new Date(year, month, day).toISOString();
+    const date = new Date(year, month, day);
     useEffect(()=>{
         const grabEvents = async()=>{
             const protocol = "http://"
             const url = import.meta.env.VITE_BACKEND_URL
             const port = import.meta.env.VITE_BACKEND_PORT
             const fullPath = `${protocol}${url}:${port}`
-            const query = new URLSearchParams({date: date});
+            const query = new URLSearchParams(
+                {startDate: date.toISOString(), 
+                endDate: dateHelper.getNextDay(date).toISOString()
+                });
             const res = await fetch(`${fullPath}/events?` + query, 
                 {
                     method: "GET",

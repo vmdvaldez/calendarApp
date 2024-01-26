@@ -237,17 +237,20 @@ app.route('/events')
     .get(async(req,res)=>{
     // console.log("REQUESTING EVENTS");
 
-    const date = req.query.date;
+    console.log(req.query)
+
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
     const q = await pool.query(`
         SELECT event.uid AS id, title, name  AS activity, 
         to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
         FROM event 
         LEFT JOIN activity ON activity_id = activity.uid 
-        WHERE '${date}' = calendar_date
+        WHERE calendar_date >= '${startDate}' AND calendar_date < '${endDate}'
         ORDER BY time_start ASC;
     `)
+    console.log(q.rows)
     res.send(q.rows);
-
     })
     .post(async(req, res)=>{
         console.log("POST TO createEvents");

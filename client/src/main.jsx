@@ -8,6 +8,7 @@ import {createBrowserRouter, RouterProvider, Navigate} from "react-router-dom"
 import Calendar from './components/Calendar/Calendar.jsx'
 import Activities from './components/Activities/Activities.jsx'
 import Categories from './components/Categories/Categories.jsx'
+import Trackers from './components/Trackers/Trackers.jsx'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "tracker",
-        element: <div>TODO</div>
+        element: <Trackers/>
       },
       {
         path: "categories",

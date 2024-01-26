@@ -37,6 +37,26 @@ const date = (()=>{
         return dayNames[dayIndex];
     }
 
+    function getStartOfWeek(date){
+        const newDate = new Date(date)
+        newDate.setDate(newDate.getDate() - newDate.getDay() + 1);
+        return newDate
+    }
+
+    function getNthDayFrom(date, inc){
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + inc);
+        return newDate
+    }
+
+    function getNextDay(date){
+        return getNthDayFrom(date, 1);
+    }
+
+    function getNextWeek(date){
+        return getNthDayFrom(date, 7);
+    }
+
     function getCurrentDate(){
         const date = new Date();
         return{
@@ -59,7 +79,9 @@ const date = (()=>{
         return (month === 2) ? (28 + leapYr) : 31 - (month - 1) % 7 % 2;
     }
 
-    return {getMonth, getDay, getCurrentDate, getDaysInMonth, months, days}
+    return {getMonth, getDay, getCurrentDate, getDaysInMonth, 
+        getStartOfWeek, getNextDay, getNextWeek,
+        months, days}
 })();
 
 
