@@ -43,6 +43,12 @@ const date = (()=>{
         return newDate
     }
 
+    function getStartOfMonth(date){
+        const newDate = new Date(date);
+        newDate.setDate(1);
+        return newDate
+    }
+
     function getNthDayFrom(date, inc){
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + inc);
@@ -55,6 +61,12 @@ const date = (()=>{
 
     function getNextWeek(date){
         return getNthDayFrom(date, 7);
+    }
+
+    function getNextMonth(date){
+        const newDate = new Date(date)
+        newDate.setMonth((date.getMonth()+1))
+        return newDate;
     }
 
     function getCurrentDate(){
@@ -80,7 +92,7 @@ const date = (()=>{
     }
 
     return {getMonth, getDay, getCurrentDate, getDaysInMonth, 
-        getStartOfWeek, getNextDay, getNextWeek,
+        getStartOfWeek, getStartOfMonth, getNextDay, getNextWeek, getNextMonth,
         months, days}
 })();
 

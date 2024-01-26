@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import styles from '../../styles/Trackers/Trackers.module.css';
 
 import date from '../../helper/date';
-import WeeklyActivityTracker from './WeeklyTracker';
+import WeeklyActivityTracker from './WeeklyActivityTracker';
+import MonthlyActivityTracker from './MonthlyActivityTracker';
 /*
 https://nivo.rocks/time-range/
 https://nivo.rocks/calendar/
@@ -142,6 +143,7 @@ export default function Trackers(){
     return(
         <section className={styles.trackers}>
             <WeeklyActivityTracker/>
+            <MonthlyActivityTracker/>
         </section>
     )
 }
