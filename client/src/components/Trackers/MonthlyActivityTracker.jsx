@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
-import styles from '../../styles/Trackers/WeeklyActivityTracker.module.css';
+import styles from '../../styles/Trackers/MonthlyActivityTracker.module.css';
 import { ResponsiveBar } from '@nivo/bar'
 
 import date from '../../helper/date';
 
-export default function MonthlyActivityTracker(){
+export default function MonthlyActivityTracker({theme, barColors}){
     const [monthStartingDate, setMonthStartingDate] = useState(date.getStartOfMonth(new Date()));
     const [monthlyActivityData, setMonthlyActivityData] = useState(null);
-
-    console.log(monthStartingDate);
-    console.log(date.getNextMonth(monthStartingDate));
 
     useEffect(()=>{
         
@@ -54,14 +51,16 @@ export default function MonthlyActivityTracker(){
 
     const MyResponsiveBar = (data) => (
         <ResponsiveBar
+            theme={theme}
             data={data}
             // keys={["value"]}
             indexBy="Activity"
-            margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-            padding={0.3}
+            colorBy="Activity"
+            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            padding={0.2}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            colors={{ scheme: 'green_blue' }}
+            colors={barColors}
             defs={[
                 {
                     id: 'dots',
@@ -167,8 +166,11 @@ export default function MonthlyActivityTracker(){
     )
 
     return(
-        <div className={styles.weeklyActivitySummary}>
-            {monthlyActivityData && MyResponsiveBar(monthlyActivityData)}
+        <div className={styles.monthlyActivities}>
+            <h2>Monthly Summary</h2>
+            <div className={styles.barGraph}>
+                {monthlyActivityData && MyResponsiveBar(monthlyActivityData)}
+            </div>
         </div>
     )
 }

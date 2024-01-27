@@ -4,7 +4,7 @@ import { ResponsiveBar } from '@nivo/bar'
 
 import date from '../../helper/date';
 
-export default function WeeklyActivityTracker(){
+export default function WeeklyActivityTracker({theme, barColors}){
     const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(new Date()));
     const [weeklyActivityData, setWeeklyActivityData] = useState(null);
 
@@ -51,14 +51,16 @@ export default function WeeklyActivityTracker(){
 
     const MyResponsiveBar = (data) => (
         <ResponsiveBar
+            theme={theme}
             data={data}
             // keys={["value"]}
             indexBy="Activity"
-            margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-            padding={0.3}
+            colorBy="Activity"
+            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            padding={0.2}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
-            colors={{ scheme: 'green_blue' }}
+            colors={barColors}
             defs={[
                 {
                     id: 'dots',
@@ -165,7 +167,10 @@ export default function WeeklyActivityTracker(){
 
     return(
         <div className={styles.weeklyActivitySummary}>
-            {weeklyActivityData && MyResponsiveBar(weeklyActivityData)}
+            <h2>Weekly Summary</h2>
+            <div className={styles.barGraph}>
+                {weeklyActivityData && MyResponsiveBar(weeklyActivityData)}
+            </div>
         </div>
     )
 }

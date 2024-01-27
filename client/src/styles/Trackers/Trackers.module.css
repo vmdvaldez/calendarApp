@@ -1,0 +1,11 @@
+.trackers{
+    padding: 2%;
+
+    position: relative;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 50vh;
+    gap: 1%;
+}
