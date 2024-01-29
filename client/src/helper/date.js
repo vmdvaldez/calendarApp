@@ -37,9 +37,10 @@ const date = (()=>{
         return dayNames[dayIndex];
     }
 
+    // Monday is the start of the week => (newDate.getDay() + 6 ) % 7
     function getStartOfWeek(date){
         const newDate = new Date(date)
-        newDate.setDate(newDate.getDate() - newDate.getDay() + 1);
+        newDate.setDate(newDate.getDate() - (newDate.getDay() + 6)%7);
         return newDate
     }
 
