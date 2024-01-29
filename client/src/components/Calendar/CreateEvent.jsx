@@ -29,8 +29,8 @@ export default function CreateEvent({ setCreateActivity, eventStates,
         if (json.status < 300){
             const newEventList = eventList.concat([{ 
                 id: json.eventid , 
-                title: eventStates.title.trim(), 
-                activity:eventStates.activity.trim(),
+                title: eventStates.title.trim().toUpperCase(), 
+                activity:eventStates.activity.trim().toUpperCase(),
                 time_start: eventStates.start,
                 time_end: eventStates.end
             }]);

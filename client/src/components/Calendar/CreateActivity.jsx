@@ -1,11 +1,12 @@
 import styles from "../../styles/Calendar/CreateActivity.module.css";
 import { useContext, useState } from "react";
-import { ActivityContext, CategoryContext } from './CalendarContext';
+import { ActivityContext, CategoryContext, CategoryRefreshContext} from './CalendarContext';
 
 
 export default function CreateActivity({setCreateActivity, activityState, setActivityState, date}){
     const [createStatus, setCreateStatus] = useState({status: 0, message: ""});
-    const {activityList, setActivityList} = useContext(ActivityContext);
+    // const {activityList, setActivityList} = useContext(ActivityContext);
+    const {refreshCategoryList} = useContext(CategoryRefreshContext);
     const {categoryList} = useContext(CategoryContext);
     const day = (new Date(date)).getDate();
     const createCategoryInputs = ()=>{
@@ -54,16 +55,18 @@ export default function CreateActivity({setCreateActivity, activityState, setAct
         if(json.status >= 400){
             console.log(json.message);
         }else{
-            const activityInfo = json.activityInfo;
-            console.log(json.message);
-            setActivityState({activity: "", categories: [""]});
-            setActivityList([{
-                id: activityInfo.id, 
-                name: activityState.activity.trim().toUpperCase(),
-                date_created: activityInfo.date_created,
-                categories: [... new Set(activityState.categories)].map(c=>c.trim().toUpperCase())
-            }].concat(activityList)); // TODO: Automatically input in Event Activity?
+            // const activityInfo = json.activityInfo;
+            // console.log(json.message);
+            // setActivityState({activity: "", categories: [""]});
+            // setActivityList([{
+            //     id: activityInfo.id, 
+            //     name: activityState.activity.trim().toUpperCase(),
+            //     date_created: activityInfo.date_created,
+            //     categories: [... new Set(activityState.categories)].map(c=>c.trim().toUpperCase())
+            // }].concat(activityList));
             setCreateActivity(false);
+            // TODO: remove set activity? this triggers a useEffect reload for both activity and category
+            refreshCategoryList() 
         }
     }
 

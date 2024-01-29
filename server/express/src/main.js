@@ -23,6 +23,7 @@ app.use('/activity', (req,res, next)=>{
 });
 app.route('/activity')
     .get(async (req,res)=>{
+        console.log("GET ACTIVITY");
         const q = await pool.query(`
             SELECT activity.uid, activity.name, 
                 to_char(activity.date_created, 'Month DD, YYYY') AS date_created,
@@ -33,7 +34,6 @@ app.route('/activity')
             GROUP BY activity.uid
             ORDER BY activity.date_created DESC
         `);
-        console.log(q.rows);
         res.send(q.rows);
         })
     .post(async(req,res)=>{
@@ -81,9 +81,6 @@ app.route('/activity')
     
             res.status(409).send({status: 409, message: "Error: Activity already exists"});
         }
-    
-        console.log(ret);
-    
     })
 
 app.route('/activity/:id')
@@ -226,7 +223,7 @@ app.route('/categories/:id')
 
 app.use('/events', (req,res,next)=>{
     for (const key in req.body){
-        if(typeof req.body[key] === 'string') req.body[key] = req.body[key].trim();
+        if(typeof req.body[key] === 'string') req.body[key] = req.body[key].trim().toUpperCase();
         else if(Array.isArray(req.body[key])) req.body[key] = req.body[key].map(elem=>{ 
             if(typeof elem === 'string') return elem.trim();
         })

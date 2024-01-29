@@ -95,7 +95,7 @@ export default function Categories(){
                                     const newCategoryDisplay = categoryList.filter(c=> c.name.trim().toLowerCase().includes(e.target.value.trim().toLowerCase()))
                                     setCategoryToDisplay(newCategoryDisplay)
                                 }else{
-                                    setCategoryList([...categoryList])
+                                    setCategoryToDisplay([...categoryList])
                                 }
                                 setCreateNewCategory({...createNewCategory, name: e.target.value.trim()})
                             }}
