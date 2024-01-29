@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
-import styles from '../../styles/Trackers/MonthlyActivityTracker.module.css';
+import styles from '../../styles/Trackers/ActivityTracker.module.css';
 import { ResponsiveBar } from '@nivo/bar'
 
-import date from '../../helper/date';
-
-export default function MonthlyActivityTracker({theme, barColors}){
-    const [monthStartingDate, setMonthStartingDate] = useState(date.getStartOfMonth(new Date()));
-    const [monthlyActivityData, setMonthlyActivityData] = useState(null);
+export default function ActivityTracker({theme, barColors, 
+    startDate, endDate, title, subTitle,prev, next
+    }){
+    // const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(new Date()));
+    const [activityData, setActivityData] = useState(null);
 
     useEffect(()=>{
         
-        const getMonthlyEvents = async () =>{
+        const getEvents = async () =>{
             const protocol = "http://"
             const url = import.meta.env.VITE_BACKEND_URL
             const port = import.meta.env.VITE_BACKEND_PORT
             const query = new URLSearchParams(
                 {
-                    startDate: monthStartingDate.toISOString(), 
-                    endDate: date.getNextMonth(monthStartingDate).toISOString()
+                    startDate: startDate.toISOString(), 
+                    endDate: endDate.toISOString()
                 })
             const res = await fetch(`${protocol}${url}:${port}/events?${query}`, {
                 method: "GET",
@@ -28,7 +28,7 @@ export default function MonthlyActivityTracker({theme, barColors}){
             return await res.json();
         }
 
-        const events = getMonthlyEvents();
+        const events = getEvents();
         
         events.then(event=>{
             const activities = event.map(e=>e.activity).filter(e=>e)
@@ -44,10 +44,10 @@ export default function MonthlyActivityTracker({theme, barColors}){
             for (const [key, val] of Object.entries(activityCount)){
                 activityCountData.push({Activity: key, value: val})
             }
-            setMonthlyActivityData(activityCountData);
+            setActivityData(activityCountData);
         })
 
-    },[monthStartingDate]);
+    },[startDate, endDate]);
 
     const MyResponsiveBar = (data) => (
         <ResponsiveBar
@@ -56,7 +56,7 @@ export default function MonthlyActivityTracker({theme, barColors}){
             // keys={["value"]}
             indexBy="Activity"
             colorBy="Activity"
-            margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
+            margin={{ top: 50, right: 0, bottom: 50, left: 50 }}
             padding={0.2}
             valueScale={{ type: 'linear' }}
             indexScale={{ type: 'band', round: true }}
@@ -166,11 +166,17 @@ export default function MonthlyActivityTracker({theme, barColors}){
     )
 
     return(
-        <div className={styles.monthlyActivities}>
-            <h2>Monthly Summary</h2>
-            <div className={styles.barGraph}>
-                {monthlyActivityData && MyResponsiveBar(monthlyActivityData)}
+        <div className={styles.activityTrackerContainer}>
+            <button className={styles.navigation} onClick={prev}></button>
+            <div className={styles.ActivitySummary}>
+                <h2>{title}</h2>
+                <p>{subTitle}</p>
+                <div className={styles.barGraph}>
+                    {activityData && MyResponsiveBar(activityData)}
+                </div>
             </div>
+            <button className={styles.navigation} onClick={next}></button>
         </div>
+
     )
 }

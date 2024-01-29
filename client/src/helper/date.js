@@ -60,18 +60,29 @@ const date = (()=>{
         return getNthDayFrom(date, 1);
     }
 
+    function getPrevWeek(date){
+        return getNthDayFrom(date, -7);
+    }
+
     function getNextWeek(date){
         return getNthDayFrom(date, 7);
     }
 
-    function getNextMonth(date){
+    function getNthMonthfrom(date, inc){
         const newDate = new Date(date)
-        newDate.setMonth((date.getMonth()+1))
+        newDate.setMonth((date.getMonth()+inc))
         return newDate;
     }
 
-    function getCurrentDate(){
-        const date = new Date();
+    function getPrevMonth(date){
+        return getNthMonthfrom(date, -1)
+    }
+
+    function getNextMonth(date){
+        return getNthMonthfrom(date, 1);
+    }
+
+    function parseDate(date){
         return{
             day: getDay(date.getDay()),
             month: getMonth(date.getMonth()),
@@ -81,6 +92,12 @@ const date = (()=>{
             mins: date.getMinutes()
         }
     }
+
+    function getCurrentDate(){
+        const date = new Date();
+        return parseDate(date);
+    }
+
 
     function isLeapYr(year){
         return (year % 4) || ((year % 100 === 0) && (year % 400) ) ? 0 : 1;
@@ -92,8 +109,9 @@ const date = (()=>{
         return (month === 2) ? (28 + leapYr) : 31 - (month - 1) % 7 % 2;
     }
 
-    return {getMonth, getDay, getCurrentDate, getDaysInMonth, 
-        getStartOfWeek, getStartOfMonth, getNextDay, getNextWeek, getNextMonth,
+    return {getMonth, getDay, parseDate, getCurrentDate, getDaysInMonth, 
+        getStartOfWeek, getStartOfMonth, getNextDay, getPrevWeek, 
+        getNextWeek, getPrevMonth, getNextMonth,
         months, days}
 })();
 
