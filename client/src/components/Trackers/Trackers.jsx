@@ -126,7 +126,6 @@ export default function Trackers(){
         }
     }
 
-
     const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(new Date()));
     const [monthStartingDate, setMonthStartingDate] = useState(date.getStartOfMonth(new Date()));
     const [yearStartingDate, setYearStartingDate] = useState(date.getStartOfYear(new Date()));
@@ -154,53 +153,59 @@ export default function Trackers(){
         setYearStartingDate(date.getNextYear(yearStartingDate));
     }
 
-    // TODO HERE next DATE
-
-
     return(
-        <section className={styles.trackers}>
-            <ActivityTracker 
-                extraClass={styles.weekly}
-                title="Weekly Summary"
-                subTitle={
-                    `Week Of 
-                    ${date.parseDate(weekStartingDate).month}
-                    ${date.parseDate(weekStartingDate).date}
-                    ${date.parseDate(weekStartingDate).year}`}
-                theme={theme} 
-                barColors={barColors} 
-                startDate={weekStartingDate}
-                endDate={date.getNextWeek(weekStartingDate)}
-                prev={prevWeek}
-                next={nextWeek}
-                />
-            <ActivityTracker
-                extraClass={styles.monthly}
-                title="Monthly Summary"
-                subTitle={
-                    `Month of
-                    ${date.parseDate(monthStartingDate).month}
-                    ${date.parseDate(weekStartingDate).year}
-                    `
-                }
-                theme={theme} 
-                barColors={barColors}
-                startDate={monthStartingDate}
-                endDate={date.getNextMonth(monthStartingDate)}
-                prev={prevMonth}
-                next={nextMonth}
-                />
-            <ActivityTracker
-                extraClass={styles.yearly}
-                title="Yearly Summary"
-                subTitle={`Year of ${date.parseDate(yearStartingDate).year}`}
-                theme={theme}
-                barColors={barColors}
-                startDate={yearStartingDate}
-                endDate={date.getNextYear(yearStartingDate)}
-                prev={prevYear}
-                next={nextYear}
-            />
-        </section>
+        <main className={styles.trackers}>
+            <section className={styles.activitySection}>
+                <h1>Activity Tracker</h1>
+                <div className={styles.activityTracker}>
+                    <ActivityTracker 
+                        extraClass={styles.weekly}
+                        title="Weekly Summary"
+                        subTitle={
+                            `Week Of 
+                            ${date.parseDate(weekStartingDate).month}
+                            ${date.parseDate(weekStartingDate).date}
+                            ${date.parseDate(weekStartingDate).year}`}
+                        theme={theme} 
+                        barColors={barColors} 
+                        startDate={weekStartingDate}
+                        endDate={date.getNextWeek(weekStartingDate)}
+                        prev={prevWeek}
+                        next={nextWeek}
+                        />
+                    <ActivityTracker
+                        extraClass={styles.monthly}
+                        title="Monthly Summary"
+                        subTitle={
+                            `Month of
+                            ${date.parseDate(monthStartingDate).month}
+                            ${date.parseDate(monthStartingDate).year}
+                            `
+                        }
+                        theme={theme} 
+                        barColors={barColors}
+                        startDate={monthStartingDate}
+                        endDate={date.getNextMonth(monthStartingDate)}
+                        prev={prevMonth}
+                        next={nextMonth}
+                        />
+                    <ActivityTracker
+                        extraClass={styles.yearly}
+                        title="Yearly Summary"
+                        subTitle={`Year of ${date.parseDate(yearStartingDate).year}`}
+                        theme={theme}
+                        barColors={barColors}
+                        startDate={yearStartingDate}
+                        endDate={date.getNextYear(yearStartingDate)}
+                        prev={prevYear}
+                        next={nextYear}
+                    />
+                </div>
+            </section>
+            {/* <section className={styles.categoryTrackers}>
+
+            </section> */}
+        </main>
+
     )
 }
