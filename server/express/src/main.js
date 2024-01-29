@@ -240,7 +240,7 @@ app.route('/events')
     const endDate = req.query.endDate;
     const q = await pool.query(`
         SELECT event.uid AS id, title, name  AS activity, 
-        to_char(time_start, 'HH:MM') AS time_start, to_char(time_end, 'HH:MM') AS time_end 
+        to_char(time_start, 'HH:MI') AS time_start, to_char(time_end, 'HH:MI') AS time_end 
         FROM event 
         LEFT JOIN activity ON activity_id = activity.uid 
         WHERE calendar_date >= '${startDate}' AND calendar_date < '${endDate}'
@@ -297,7 +297,7 @@ app.route('/events/:id')
         console.log(eventId)
         try{
             const q = await pool.query(`
-            SELECT e.uid AS id, e.title AS title, to_char(time_start, 'HH:MM AM') AS time_start,  to_char(time_end, 'HH:MM AM') AS time_end, 
+            SELECT e.uid AS id, e.title AS title, to_char(time_start, 'HH:MI AM') AS time_start,  to_char(time_end, 'HH:MI AM') AS time_end, 
             act.name AS activity, ARRAY_AGG(cat.name) AS categories , to_char(e.date_created, 'MONTH DD, YYYY') AS date_created  
             FROM event AS e 
             LEFT JOIN activity AS act ON act.uid = e.activity_id
