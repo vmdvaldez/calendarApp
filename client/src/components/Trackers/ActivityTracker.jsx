@@ -3,7 +3,7 @@ import styles from '../../styles/Trackers/ActivityTracker.module.css';
 import { ResponsiveBar } from '@nivo/bar'
 
 export default function ActivityTracker({theme, barColors, 
-    startDate, endDate, title, subTitle,prev, next
+    startDate, endDate, title, subTitle,prev, next, extraClass
     }){
     // const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(new Date()));
     const [activityData, setActivityData] = useState(null);
@@ -166,7 +166,7 @@ export default function ActivityTracker({theme, barColors,
     )
 
     return(
-        <div className={styles.activityTrackerContainer}>
+        <div className={`${styles.activityTrackerContainer} ${extraClass}`}>
             <button className={styles.navigation} onClick={prev}></button>
             <div className={styles.ActivitySummary}>
                 <h2>{title}</h2>

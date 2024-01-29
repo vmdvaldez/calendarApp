@@ -50,6 +50,12 @@ const date = (()=>{
         return newDate
     }
 
+    function getStartOfYear(date){
+        const newDate = new Date(date);
+        newDate.setFullYear(date.getFullYear(), 0, 1)
+        return newDate;
+    }
+
     function getNthDayFrom(date, inc){
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + inc);
@@ -70,7 +76,7 @@ const date = (()=>{
 
     function getNthMonthfrom(date, inc){
         const newDate = new Date(date)
-        newDate.setMonth((date.getMonth()+inc))
+        newDate.setMonth(date.getMonth()+inc)
         return newDate;
     }
 
@@ -80,6 +86,20 @@ const date = (()=>{
 
     function getNextMonth(date){
         return getNthMonthfrom(date, 1);
+    }
+
+    function getNthYearFrom(date, inc){
+        const newDate = new Date(date);
+        newDate.setFullYear(date.getFullYear() + inc)
+        return newDate;
+    }
+
+    function getNextYear(date){
+        return getNthYearFrom(date, 1);
+    }
+
+    function getPrevYear(date){
+        return getNthYearFrom(date, -1);
     }
 
     function parseDate(date){
@@ -110,8 +130,8 @@ const date = (()=>{
     }
 
     return {getMonth, getDay, parseDate, getCurrentDate, getDaysInMonth, 
-        getStartOfWeek, getStartOfMonth, getNextDay, getPrevWeek, 
-        getNextWeek, getPrevMonth, getNextMonth,
+        getStartOfWeek, getStartOfMonth, getStartOfYear, getNextDay, getPrevWeek, 
+        getNextWeek, getPrevMonth, getNextMonth, getPrevYear, getNextYear,
         months, days}
 })();
 
