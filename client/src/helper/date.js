@@ -118,6 +118,20 @@ const date = (()=>{
         return parseDate(date);
     }
 
+    // Expected format of HH:MM AM
+    function standardToMilitaryTime(time){
+        const [hhmm, meridiem] = time.split(" ");
+        let [hours, mins] = hhmm.split(":");
+
+        if (meridiem === "PM" && hours != "12"){
+            hours = String(+hours + 12);
+        }
+        if (meridiem === "AM" && hours === "12"){
+            hours = "00"
+        }
+        return `${hours}:${mins}`
+    }
+
 
     function isLeapYr(year){
         return (year % 4) || ((year % 100 === 0) && (year % 400) ) ? 0 : 1;
@@ -131,7 +145,7 @@ const date = (()=>{
 
     return {getMonth, getDay, parseDate, getCurrentDate, getDaysInMonth, 
         getStartOfWeek, getStartOfMonth, getStartOfYear, getNextDay, getPrevWeek, 
-        getNextWeek, getPrevMonth, getNextMonth, getPrevYear, getNextYear,
+        getNextWeek, getPrevMonth, getNextMonth, getPrevYear, getNextYear, standardToMilitaryTime,
         months, days}
 })();
 

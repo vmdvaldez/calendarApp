@@ -9,6 +9,8 @@ export default function CalendarDay({day, month, year}){
     const [clicked, setClicked] = useState({clicked: false, displayRight: true});
     const [eventClicked, setEventClicked] = useState({id: null, clicked: false});
     const [events, setEvents] = useState([])
+    const [eventUpdated, setEventUpdated] = useState(false);
+
     const date = new Date(year, month, day);
     useEffect(()=>{
         const grabEvents = async()=>{
@@ -34,7 +36,7 @@ export default function CalendarDay({day, month, year}){
 
         grabEvents().then(events=>setEvents(events));
 
-    },[month, day, year]);
+    },[month, day, year, eventUpdated]);
 
     function removeEventById(id){
         for (let i = 0; i < events.length; i++){
@@ -42,6 +44,10 @@ export default function CalendarDay({day, month, year}){
                 setEvents(events.toSpliced(i, 1));
             }
         }
+    }
+
+    function triggerEventUpdated(){
+        setEventUpdated(!eventUpdated);
     }
 
     return(
@@ -69,6 +75,7 @@ export default function CalendarDay({day, month, year}){
                                     displayRight={eventClicked.displayRight}
                                     eventId={ev.id}
                                     removeEventById={removeEventById}
+                                    triggerEventUpdated={triggerEventUpdated}
                                     />}
                             <li
                                 onClick={(e)=>{

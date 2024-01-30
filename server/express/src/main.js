@@ -334,6 +334,33 @@ app.route('/events/:id')
         }
 
     })
+    .put(async(req, res)=>{
+        console.log(req.body);
+        const eventId = req.body.id;
+        const title = req.body.title;
+        const start = req.body.time_start
+        const end = req.body.time_end
+        const activity_id = req.body.activity_id
+
+        try{
+            const q = await pool.query(`
+                UPDATE event
+                SET 
+                    title = '${title}' , 
+                    time_start = '${start}' ,
+                    time_end = '${end}' , 
+                    activity_id = '${activity_id}'
+                WHERE
+                    uid = '${eventId}'
+            `)
+            console.log(q.rows);
+            res.status(200).send({status: 200, message: `Event Successfully Updated`})
+        }
+        catch(e){
+            console.log(e)
+            res.status(409).send({status: 409, message: `Error Occured Cannot Updated`})
+        }
+    })
 
 const port = 3000
 app.listen(port, ()=>{
