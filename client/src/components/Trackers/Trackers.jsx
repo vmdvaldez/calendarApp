@@ -125,10 +125,14 @@ export default function Trackers(){
             "tableCellValue": {}
         }
     }
-
-    const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(new Date()));
-    const [monthStartingDate, setMonthStartingDate] = useState(date.getStartOfMonth(new Date()));
-    const [yearStartingDate, setYearStartingDate] = useState(date.getStartOfYear(new Date()));
+    
+    const today = new Date()
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    const [weekStartingDate, setWeekStartingDate] = useState(date.getStartOfWeek(today));
+    const [monthStartingDate, setMonthStartingDate] = useState(date.getStartOfMonth(today));
+    const [yearStartingDate, setYearStartingDate] = useState(date.getStartOfYear(today));
 
     function nextWeek(){
         setWeekStartingDate(date.getNextWeek(weekStartingDate))
@@ -152,6 +156,9 @@ export default function Trackers(){
     function nextYear(){
         setYearStartingDate(date.getNextYear(yearStartingDate));
     }
+
+    console.log(weekStartingDate)
+    console.log(date.getNextWeek(weekStartingDate))
 
     return(
         <main className={styles.trackers}>

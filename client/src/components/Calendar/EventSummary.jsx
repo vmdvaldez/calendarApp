@@ -123,8 +123,8 @@ export default function EventSummary({eventId, removeEventById, displayRight, tr
                         list="activity_list_event_sum"
                         value={editedInfo.activity}
                         onChange={(e)=>{
-                            e.target.setCustomValidity("")
                             setEditedInfo({...editedInfo, activity: e.target.value})
+                            e.target.setCustomValidity("")
                         }}
                         onBlur={(e)=>{
                             const elem = e.target
